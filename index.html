@@ -175,7 +175,129 @@
 </body>
 </html>
 
-      
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Player de Episódios</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    video {
+      width: 90%;
+      max-width: 800px;
+      height: auto;
+      margin: 20px auto;
+      display: block;
+      background: #000;
+    }
+    select {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 20px;
+      background: orange;
+      border: none;
+      color: #000;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>SuperPlayer - Episódios 01 ao 25</h1>
+
+  <video id="videoPlayer" controls></video>
+
+  <br>
+
+  <label for="episodios">Escolha o Episódio:</label><br>
+  <select id="episodios" onchange="trocarEpisodio(this.value)">
+    <option value="">Selecione um episódio</option>
+    <option value="EP01">Episódio 01</option>
+    <option value="EP02">Episódio 02</option>
+    <option value="EP03">Episódio 03</option>
+    <option value="EP04">Episódio 04</option>
+    <option value="EP05">Episódio 05</option>
+    <option value="EP06">Episódio 06</option>
+    <option value="EP07">Episódio 07</option>
+    <option value="EP08">Episódio 08</option>
+    <option value="EP09">Episódio 09</option>
+    <option value="EP10">Episódio 10</option>
+    <option value="EP11">Episódio 11</option>
+    <option value="EP12">Episódio 12</option>
+    <option value="EP13">Episódio 13</option>
+    <option value="EP14">Episódio 14</option>
+    <option value="EP15">Episódio 15</option>
+    <option value="EP16">Episódio 16</option>
+    <option value="EP17">Episódio 17</option>
+    <option value="EP18">Episódio 18</option>
+    <option value="EP19">Episódio 19</option>
+    <option value="EP20">Episódio 20</option>
+    <option value="EP21">Episódio 21</option>
+    <option value="EP22">Episódio 22</option>
+    <option value="EP23">Episódio 23</option>
+    <option value="EP24">Episódio 24</option>
+    <option value="EP25">Episódio 25</option>
+  </select>
+
+  <script>
+    const video = document.getElementById('videoPlayer');
+
+    const episodios = {
+      "EP01": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP02": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP03": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP04": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP05": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP06": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP07": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP08": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP09": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP10": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP11": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP12": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP13": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP14": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP15": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP16": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP17": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP18": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP19": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP20": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP21": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP22": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP23": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP24": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      "EP25": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" }
+    };
+
+    function trocarEpisodio(ep) {
+      if (!ep || !episodios[ep]) return;
+
+      const { m3u8, mp4 } = episodios[ep];
+
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(m3u8);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = m3u8;
+      } else {
+        video.src = mp4;
+      }
+
+      video.play();
+    }
+  </script>
+
+</body>
+</html>      
   
   </div>
   
