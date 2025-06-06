@@ -1,43 +1,99 @@
+<style>
+  #video-background {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+    object-fit: cover;
+  }
+  .post-body {
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.4); /* fundo semitransparente pra contraste */
+    color: white;
+    padding: 20px;
+  }
+</style>
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Blogflixtv</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/hls.min.js"></script>
-    <script src="js/script.js" defer></script>
+<video autoplay muted loop id="video-background" playsinline>
+  <source src="https://piratetv.pro/wp-content/themes/Pirate%20TV%204v/assets/images/top-bg.mp4" type="video/mp4">
+  Seu navegador não suporta vídeo.
+</video>
+
+
+</style>
+
 </head>
+
 <body>
-    <header>
-        <h1>Blogflixtv</h1>
-        <nav>
-            <button onclick="showTab('series')">Séries</button>
-            <button onclick="showTab('filmes')">Filmes</button>
-            <button onclick="showTab('tv')">TV</button>
-        </nav>
-    </header>
 
-    <main>
-        <section id="series" class="tab active">
-            <h2>Séries - O chaves</h2>
-            <iframe width="560" height="315" src="https://imgarena-prod-v2-eu.akamaized.net/hls/live/2094743/484639-433809/hdntl=exp=1749327388~acl=%2f*~id=bf218795-39c2-4e9a-90c6-c675ccb008ab~data=hdntl~hmac=33d5dec046047e1c43692c0c61948829396534dc25ebb5bf52c0dd9f63ab8bba/playlist_360p25.m3u8" 
-                title="YouTube player - A Praça É Nossa" frameborder="0" allowfullscreen></iframe>
-        </section>
+<h1>TV ONLINE</h1>
 
-        <section id="filmes" class="tab">
-            <h2>Filmes</h2>
-            <video controls width="560">
-                <source src="https://stmv6.voxtvhd.com.br/retrotv3/retrotv3/playlist.m3u8" type="video/mp4">
-                Seu navegador não suporta vídeo.
-            </video>
-        </section>
+<div class="buttons">
 
-        <section id="tv" class="tab">
-            <h2>TV - Jornal da Record</h2>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/uh9c7Nhv-mA" 
-                title="YouTube player - Jornal da Record" frameborder="0" allowfullscreen></iframe>
-        </section>
-    </main>
-</body>
-</html>
+  <button data-category="esportes" class="active">Esportes</button><a href="https://testeagora.tv/logtvseries"></a>
+
+  <button data-category="noticias">Notícias</button>
+
+  <button data-category="entretenimento">Entretenimento</button>
+
+</div>
+
+<div class="category" id="tvContainer">
+
+  <!-- Janelas de TV vão aparecer aqui -->
+
+</div>
+
+  
+<iframe src="https://embedflix.top/tv/prfc-1-hdl" allow="encrypted-media" allowfullscreen="" frameborder="0" width="100%" height="400"></iframe>
+  
+
+  
+    <h1>TV Online Multi Categorias</h1>
+
+  <h2>Esportes</h2>
+
+  <div class="category">
+
+    <div class="tv-window">
+
+      <iframe src="https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_6660.m3u8" allowfullscreen></iframe>
+
+    </div>
+
+    <div class="betano">
+
+      <iframe src="https://lc-live-http.akamaized.net/at/cw/27877/6518991/mobile-ireland/master.m3u8?cid=27877&mid=56720519&ecid=6518991&pid=2&dtid=1&sid=098143589928&csid=67262095&gc=eEw&gsd=aV0&grm=1&hdnts=exp=1749170118~acl=%2Fat%2Fcw%2F27877%2F6518991%2Fmobile-ireland%2F%2A~data=ip=2804:30c:2e00:a00:d490:e586:269e:f5fa,mask=24~hmac=8b1fa6b61a41befe77a391bebdc6af0e3f9e3af72f87b03d21989db720d412e6" allowfullscreen></iframe>
+
+    </div>
+
+  </div>
+
+  <h2>Notícias</h2>
+
+  <div class="category">
+
+    <div class="tv-window">
+
+      <iframe src="https://vodcinevs.com/series/222431.mp4" allowfullscreen></iframe>
+
+    </div>
+
+    <div class="tv-window">
+
+      <iframe src="https://www.youtube.com/embed/live_stream?channel=UC16niRr50-MSBwiO3YDb3RA" allowfullscreen></iframe>
+
+    </div>
+
+  </div>
+  
+  
+  <a href="https://referme.to/danielj-4772" target="_blank">CADASTRE E GANHE BÔNUS </a>
+  
+  
+  
+  <a href="https://testeagora.tv/logtvseries" target="_blank">TVAQUI</a> 
+  
