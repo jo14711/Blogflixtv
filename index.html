@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Blogflixtv</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/hls.min.js"></script>
+    <script src="js/script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Blogflixtv</h1>
+        <nav>
+            <button onclick="showTab('series')">Séries</button>
+            <button onclick="showTab('filmes')">Filmes</button>
+            <button onclick="showTab('tv')">TV</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="series" class="tab active">
+            <h2>Séries - A Praça É Nossa</h2>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/O1EJ8F7SbmA" 
+                title="YouTube player - A Praça É Nossa" frameborder="0" allowfullscreen></iframe>
+        </section>
+
+        <section id="filmes" class="tab">
+            <h2>Filmes</h2>
+            <video controls width="560">
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </section>
+
+        <section id="tv" class="tab">
+            <h2>TV - Jornal da Record</h2>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/uh9c7Nhv-mA" 
+                title="YouTube player - Jornal da Record" frameborder="0" allowfullscreen></iframe>
+        </section>
+    </main>
+</body>
+</html>
