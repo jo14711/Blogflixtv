@@ -1,310 +1,87 @@
-<style>
-  #video-background {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    z-index: -1;
-    object-fit: cover;
-  }
-  .post-body {
-    position: relative;
-    z-index: 1;
-    background: rgba(0, 0, 0, 0.4); /* fundo semitransparente pra contraste */
-    color: white;
-    padding: 20px;
-  }
-</style>
-
-<video autoplay muted loop id="video-background" playsinline>
-  <source src="https://piratetv.pro/wp-content/themes/Pirate%20TV%204v/assets/images/top-bg.mp4" type="video/mp4">
-  Seu navegador não suporta vídeo.
-</video>
-
-
-</style>
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TV Online Multi Categorias</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+    }
+    h2 {
+      margin-top: 40px;
+      color: #333;
+      border-bottom: 2px solid #888;
+      padding-bottom: 6px;
+    }
+    .category {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .tv-window {
+      background: white;
+      border: 2px solid #444;
+      border-radius: 8px;
+      width: 320px;
+      height: 180px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #aaa;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
 </head>
-
 <body>
-
-<h1>TV ONLINE</h1>
-
-<div class="buttons">
-
-  <button data-category="esportes" class="active">Esportes</button><a href="https://testeagora.tv/logtvseries"></a>
-
-  <button data-category="noticias">Notícias</button>
-
-  <button data-category="entretenimento">Entretenimento</button>
-
-</div>
-
-<div class="category" id="tvContainer">
-
-  <!-- Janelas de TV vão aparecer aqui -->
-
-</div>
-
-
-  <a href="https://testeagora.tv/logtvseries" target="_blank">👉SEU TESTE AQUI👈</a>
-<div class="separator" style="clear: both;"><a href="https://www.dropbox.com/scl/fi/3tt5v2hrwsv6qz8ewph9c/TESTE.jpg?rlkey=vdsmosx5tgf5s2cd5091blm6n&amp;st=46xcq044&amp;dl=1" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" data-original-height="676" data-original-width="720" src="https://www.dropbox.com/scl/fi/3tt5v2hrwsv6qz8ewph9c/TESTE.jpg?rlkey=vdsmosx5tgf5s2cd5091blm6n&amp;st=46xcq044&amp;dl=1"/></a></div>
-
-<iframe src="https://server2.mycinevs.com/ESPN1/tracks-v1a1/mono.ts.m3u8?token=f1m6Drtd3P60" allow="encrypted-media" allowfullscreen="" frameborder="0" width="100%" height="400"></iframe>
-  
-
-  
-    <h1>TV Online Multi Categorias</h1>
+  <h1>TV Online Multi Categorias</h1>
 
   <h2>Esportes</h2>
-
   <div class="category">
-
     <div class="tv-window">
-
-      <iframe src="https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_6660.m3u8" allowfullscreen></iframe>
-
+      <iframe src="https://player.twitch.tv/?channel=esports&parent=localhost" allowfullscreen></iframe>
     </div>
-
     <div class="betano">
-
-      <iframe src="https://lc-live-http.akamaized.net/at/cw/27877/6518991/mobile-ireland/master.m3u8?cid=27877&mid=56720519&ecid=6518991&pid=2&dtid=1&sid=098143589928&csid=67262095&gc=eEw&gsd=aV0&grm=1&hdnts=exp=1749170118~acl=%2Fat%2Fcw%2F27877%2F6518991%2Fmobile-ireland%2F%2A~data=ip=2804:30c:2e00:a00:d490:e586:269e:f5fa,mask=24~hmac=8b1fa6b61a41befe77a391bebdc6af0e3f9e3af72f87b03d21989db720d412e6" allowfullscreen></iframe>
-
+      <iframe src="https://youtu.be/NSnHugE9p6c?si=RrXuUB9GpdGRWoe1" allowfullscreen></iframe>
     </div>
-
   </div>
 
   <h2>Notícias</h2>
-
   <div class="category">
-
     <div class="tv-window">
-
-      <iframe src="https://stmv1.srvif.com/jetsontv/jetsontv/playlist.m3u8" allowfullscreen></iframe>
-
+      <iframe src="https://www.youtube.com/embed/live_stream?channel=UCLm0nvX5QfDJUVpZRV5Y9Rg" allowfullscreen></iframe>
     </div>
-
     <div class="tv-window">
-
-      <iframe src="https://stmv6.voxtvhd.com.br/retrotv3/retrotv3/playlist.m3u8" allowfullscreen></iframe>
-
+      <iframe src="https://www.youtube.com/embed/live_stream?channel=UC16niRr50-MSBwiO3YDb3RA" allowfullscreen></iframe>
     </div>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Player de Episódios</title>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: sans-serif;
-      text-align: center;
-    }
-    video {
-      width: 90%;
-      max-width: 800px;
-      height: auto;
-      margin: 20px auto;
-      display: block;
-      background: #000;
-    }
-    select {
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 20px;
-      background: orange;
-      border: none;
-      color: #000;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-<body>
+  </div>
 
-  <h1>SuperPlayer - Episódios 01 ao 25</h1>
+  <h2>Entretenimento</h2>
+  <div class="category">
+    <div class="tv-window">
+      <iframe src="https://player.twitch.tv/?channel=justchatting&parent=localhost" allowfullscreen></iframe>
+    </div>
+    <div class="tv-window">
+      <iframe src="https://www.youtube.com/embed/live_stream?channel=UC4QZ_LsYcvcq7qOsOhpAX4A" allowfullscreen></iframe>
+    </div>
+  </div>
 
-  <video id="videoPlayer" controls></video>
-
-  <br>
-
-  <label for="episodios">Escolha o Episódio:</label><br>
-  <select id="episodios" onchange="trocarEpisodio(this.value)">
-    <option value="">Selecione um episódio</option>
-    <!-- Episódios 01 a 25 -->
-    ${[...Array(25)].map((_, i) => {
-      const ep = (i + 1).toString().padStart(2, '0');
-      return `<option value="EP${ep}">Episódio ${ep}</option>`;
-    }).join('\n')}
-  </select>
-
-  <script>
-    const video = document.getElementById('videoPlayer');
-
-    const episodios = {
-      ${[...Array(25)].map((_, i) => {
-        const ep = (i + 1).toString().padStart(2, '0');
-        return `"EP${ep}": {
-          m3u8: "https://exemplo.com/video${ep}.m3u8",
-          mp4: "https://exemplo.com/video${ep}.mp4"
-        }`;
-      }).join(',\n')}
-    };
-
-    function trocarEpisodio(ep) {
-      if (!ep || !episodios[ep]) return;
-
-      const { m3u8, mp4 } = episodios[ep];
-
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(m3u8);
-        hls.attachMedia(video);
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = m3u8;
-      } else {
-        video.src = mp4;
-      }
-
-      video.play();
-    }
-  </script>
-
+  <footer>
+    <p>Abra este arquivo em seu navegador. Se usar localmente, mantenha "parent=localhost" nos links Twitch.</p>
+  </footer>
 </body>
 </html>
-
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Player de Episódios</title>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: sans-serif;
-      text-align: center;
-    }
-    video {
-      width: 90%;
-      max-width: 800px;
-      height: auto;
-      margin: 20px auto;
-      display: block;
-      background: #000;
-    }
-    select {
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 20px;
-      background: orange;
-      border: none;
-      color: #000;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>SuperPlayer - Episódios 01 ao 25</h1>
-
-  <video id="videoPlayer" controls></video>
-
-  <br>
-
-  <label for="episodios">Escolha o Episódio:</label><br>
-  <select id="episodios" onchange="trocarEpisodio(this.value)">
-    <option value="">Selecione um episódio</option>
-    <option value="EP01">Episódio 01</option>
-    <option value="EP02">Episódio 02</option>
-    <option value="EP03">Episódio 03</option>
-    <option value="EP04">Episódio 04</option>
-    <option value="EP05">Episódio 05</option>
-    <option value="EP06">Episódio 06</option>
-    <option value="EP07">Episódio 07</option>
-    <option value="EP08">Episódio 08</option>
-    <option value="EP09">Episódio 09</option>
-    <option value="EP10">Episódio 10</option>
-    <option value="EP11">Episódio 11</option>
-    <option value="EP12">Episódio 12</option>
-    <option value="EP13">Episódio 13</option>
-    <option value="EP14">Episódio 14</option>
-    <option value="EP15">Episódio 15</option>
-    <option value="EP16">Episódio 16</option>
-    <option value="EP17">Episódio 17</option>
-    <option value="EP18">Episódio 18</option>
-    <option value="EP19">Episódio 19</option>
-    <option value="EP20">Episódio 20</option>
-    <option value="EP21">Episódio 21</option>
-    <option value="EP22">Episódio 22</option>
-    <option value="EP23">Episódio 23</option>
-    <option value="EP24">Episódio 24</option>
-    <option value="EP25">Episódio 25</option>
-  </select>
-
-  <script>
-    const video = document.getElementById('videoPlayer');
-
-    const episodios = {
-      "EP01": { m3u8: "https://stream.ads.ottera.tv/playlist.m3u8?network_id=5431", mp4: "https://animeflix.blog/Desenhos/Street Fighter II Victory/Dublado/01.mp4" },
-      "EP02": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP03": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP04": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP05": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP06": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP07": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP08": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP09": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP10": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP11": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP12": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP13": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP14": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP15": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP16": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP17": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP18": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP19": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP20": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP21": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP22": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP23": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP24": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" },
-      "EP25": { m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mp4: "https://www.w3schools.com/html/mov_bbb.mp4" }
-    };
-
-    function trocarEpisodio(ep) {
-      if (!ep || !episodios[ep]) return;
-
-      const { m3u8, mp4 } = episodios[ep];
-
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(m3u8);
-        hls.attachMedia(video);
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = m3u8;
-      } else {
-        video.src = mp4;
-      }
-
-      video.play();
-    }
-  </script>
-
-</body>
-</html>      
-  
-  </div>
-  
-  
-  <a href="https://referme.to/danielj-4772" target="_blank">CADASTRE E GANHE BÔNUS </a>
-  
-  
-  
-  <a href="https://testeagora.tv/logtvseries" target="_blank">TVAQUI</a> 
-  
