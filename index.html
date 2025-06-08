@@ -456,31 +456,4 @@
     #msg {
       margin-top: 10px;
     }
-  </style>
-</head>
-<body>
-  <div class="login-box">
-    <h2>🔐 Login - Blogflixtv</h2>
-    <input type="text" id="user" placeholder="Usuário" />
-    <input type="password" id="pass" placeholder="Senha" />
-    <button onclick="login()">Entrar</button>
-    <p id="msg"></p>
-  </div>
-
-  <script>
-    function login() {
-      const user = document.getElementById('user').value;
-      const pass = document.getElementById('pass').value;
-      const msg = document.getElementById('msg');
-
-      // Usuário e senha fixos
-      if (user === "admin" && pass === "1234") {
-        window.location.href = "index.html"; // redireciona
-      } else {
-        msg.textContent = "Usuário ou senha incorretos!";
-        msg.style.color = "red";
-      }
-    }
-  </script>
-</body>
-</html>
+  
