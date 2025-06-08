@@ -1,5 +1,71 @@
 <div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhuKQMvIPNO_K0nFGPMnkFeK3h-GeQ2QRLAmCpdcj4Gm9wnxVTIS7gnpPq_GCVFN6353hQg55MYU5Bw-Gh1TyKCeT6-KKhOUlI3GJwFp4KejtCrPMsp2lKQ0uuHPBnPaMyUAmKXQhNL0-S35ZnYKBP5HZemiiVdcvGlFdLb3QeN9DJq1RN74DFiQ7dWhkg/s1600/1000167001.png" style="display: block; padding: 1em 0; text-align: center; clear: left; float: left;"><img alt="" border="0" data-original-height="1024" data-original-width="1536" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhuKQMvIPNO_K0nFGPMnkFeK3h-GeQ2QRLAmCpdcj4Gm9wnxVTIS7gnpPq_GCVFN6353hQg55MYU5Bw-Gh1TyKCeT6-KKhOUlI3GJwFp4KejtCrPMsp2lKQ0uuHPBnPaMyUAmKXQhNL0-S35ZnYKBP5HZemiiVdcvGlFdLb3QeN9DJq1RN74DFiQ7dWhkg/s1600/1000167001.png"/></a></div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Players Automáticos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    body { background: #121212; color: white; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    h1 { text-align: center; color: #ff9800; padding: 20px; }
+    #player-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; padding: 20px; }
+    .card { background: #1f1f1f; border-radius: 15px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.6); }
+    video, iframe { width: 100%; height: 250px; border-radius: 10px; background: #000; }
+    .player-title { margin: 10px 0; color: #ffc107; font-weight: bold; }
+    @media(max-width: 600px){ video, iframe { height: 200px; } }
+  </style>
+</head>
+<body>
+  <h1>🎬 Lista de Players (Automático via Dropbox)</h1>
+  <div id="player-list">Carregando players...</div>
 
+  <script>
+    const dropboxURL = "https://www.dropbox.com/scl/fi/0z92ks0aqhzi32z03ihf5/DGBZ.txt?rlkey=m99s4dke5zhqyr5y5vmi5342x&dl=1";
+
+    fetch(dropboxURL)
+      .then(res => res.text())
+      .then(text => {
+        const links = text.split(/\\r?\\n/).filter(l => l.trim());
+        const container = document.getElementById("player-list");
+        container.innerHTML = "";
+
+        links.forEach((url, index) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `<div class="player-title">Player ${index + 1}</div>`;
+
+          if (url.includes("youtube.com") || url.includes("youtu.be")) {
+            const yt = url.includes("embed") ? url : "https://www.youtube.com/embed/" + url.split(/v=|youtu.be\\//)[1];
+            card.innerHTML += `<iframe src="${yt}" frameborder="0" allowfullscreen></iframe>`;
+          } else if (url.endsWith(".mp4")) {
+            card.innerHTML += `<video src="${url}" controls preload="metadata"></video>`;
+          } else if (url.endsWith(".m3u8")) {
+            const videoId = "hls_" + index;
+            card.innerHTML += `<video id="${videoId}" controls></video>
+              <script>
+                if(Hls.isSupported()){
+                  var hls = new Hls();
+                  hls.loadSource("${url}");
+                  hls.attachMedia(document.getElementById("${videoId}"));
+                } else {
+                  document.getElementById("${videoId}").src = "${url}";
+                }
+              <\\/script>`;
+          } else {
+            card.innerHTML += `<iframe src="${url}" allowfullscreen></iframe>`;
+          }
+
+          container.appendChild(card);
+        });
+      })
+      .catch(error => {
+        document.getElementById("player-list").innerHTML = "Erro ao carregar os players.";
+        console.error("Erro ao carregar lista:", error);
+      });
+  </script>
+</body>
+</html>
 
 <style>
 
