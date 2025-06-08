@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blogflixtv - Player com Lista</title>
+  <style>
+    body { background-color: #111; color: white; font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; }
+    header { background-color: orange; padding: 1em; }
+    .player-container { max-width: 800px; margin: 30px auto; }
+    video { width: 100%; border-radius: 10px; background: #000; }
+    .playlist {
+      margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+    }
+    .playlist button {
+      background: #ff6600; border: none; color: white; padding: 10px 15px;
+      border-radius: 6px; cursor: pointer; font-weight: bold;
+    }
+    .playlist button:hover { background: #e65c00; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎬 Blogflixtv - Player com Lista M3U8</h1>
+  </header>
+  <div class="player-container">
+    <video id="video" controls autoplay></video>
+    <div class="playlist" id="playlist">Carregando lista...</div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
+    const video = document.getElementById('video');
+    const playlistDiv = document.getElementById('playlist');
+    const listaURL = 'https://dl.dropboxusercontent.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=48drrtnq&dl=1';
+
+    function loadPlayer(src) {
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(src);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = src;
+      } else {
+        alert('Seu navegador não suporta vídeo M3U8.');
+      }
+    }
+
+    fetch(listaURL)
+      .then(res => res.text())
+      .then(data => {
+        const links = data.split('\n').filter(l => l.trim() !== '');
+        playlistDiv.innerHTML = '';
+        links.forEach((link, index) => {
+          const btn = document.createElement('button');
+          btn.textContent = `Canal ${index + 1}`;
+          btn.onclick = () => loadPlayer(link.trim());
+          playlistDiv.appendChild(btn);
+          if (index === 0) loadPlayer(link.trim());
+        });
+      })
+      .catch(err => {
+        playlistDiv.textContent = 'Erro ao carregar a lista.';
+        console.error('Erro ao buscar lista M3U8:', err);
+      });
+  </script>
+</body>
+</html>
