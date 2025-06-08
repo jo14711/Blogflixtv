@@ -1,3 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minha Playlist de Vídeos MP4</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      color: #0077cc;
+      margin-bottom: 30px;
+      animation: fadeIn 2s ease-in-out;
+    }
+    video {
+      width: 80%;
+      max-width: 720px;
+      border: 3px solid #0077cc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      margin-bottom: 15px;
+      animation: zoomIn 1.5s ease;
+    }
+    button, a.download-link {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #0077cc;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover, a.download-link:hover {
+      background-color: #005fa3;
+    }
+    .description {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      animation: fadeIn 3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Minha Playlist de Vídeos MP4</h1>
+
+  <div class="description">
+    <p>Aqui está minha coleção de vídeos hospedados no GitHub. Assista, baixe e aproveite!</p>
+  </div>
+
+  <!-- Player de vídeo -->
+  <video id="player" controls>
+    <source id="videoSource" src="https://raw.githubusercontent.com/usuario/repositorio/main/video1.mp4" type="video/mp4">
+    Seu navegador não suporta vídeo.
+  </video>
+
+  <br>
+
+  <!-- Botão de download -->
+  <a id="downloadLink" class="download-link" href="https://raw.githubusercontent.com/usuario/repositorio/main/video1.mp4" download>Baixar Vídeo</a>
+
+  <br>
+
+  <!-- Playlist de vídeos -->
+  <button onclick="trocarVideo('https://raw.githubusercontent.com/usuario/repositorio/main/video1.mp4')">Vídeo 1</button>
+  <button onclick="trocarVideo('https://raw.githubusercontent.com/usuario/repositorio/main/video2.mp4')">Vídeo 2</button>
+  <button onclick="trocarVideo('https://raw.githubusercontent.com/usuario/repositorio/main/video3.mp4')">Vídeo 3</button>
+
+  <script>
+    function trocarVideo(novoLink) {
+      const player = document.getElementById('player');
+      const source = document.getElementById('videoSource');
+      const downloadLink = document.getElementById('downloadLink');
+
+      source.src = novoLink;
+      player.load();
+      downloadLink.href = novoLink;
+    }
+  </script>
+
+</body>
+</html>
 <style>
   #video-background {
     position: fixed;
