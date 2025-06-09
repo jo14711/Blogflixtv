@@ -741,37 +741,4 @@
 
         Seu navegador não suporta o player.
 
-        <div style="text-align:center; padding:10px; background:#006437; color:#fff; border-radius:10px; font-family:'Orbitron', sans-serif;">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Palmeiras_logo.svg" alt="Palmeiras" style="width:60px;"><br>
-  <h2>Relógio Digital Palmeiras</h2>
-  <div id="palmeiras-clock" style="font-size:2em;"></div>
-</div>
-
-<script>
-function atualizarRelogio() {
-  const agora = new Date();
-  const horas = agora.getHours().toString().padStart(2, '0');
-  const minutos = agora.getMinutes().toString().padStart(2, '0');
-  const segundos = agora.getSeconds().toString().padStart(2, '0');
-  document.getElementById("palmeiras-clock").innerHTML = `${horas}:${minutos}:${segundos}`;
-}
-setInterval(atualizarRelogio, 1000);
-atualizarRelogio();
-</script>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-
-
-
-
         
-
-      </audio>
-
-    </div>
-
-  </div>
-
-</body>
-
-</html>
