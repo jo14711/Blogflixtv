@@ -195,10 +195,6 @@
 
 
 
-
-
-
-
 <!DOCTYPE html>
 
 <html lang="pt-BR">
@@ -281,7 +277,358 @@
 
   <nav>
 
-    
+   <style>
+
+  /* Estilo do relógio flutuante */
+
+  #rel-clock {
+
+    position: fixed;
+
+    bottom: 20px;
+
+    right: 20px;
+
+    z-index: 9999;
+
+    background: #111;
+
+    border: 2px solid #006633;
+
+    padding: 10px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 0 15px #006633;
+
+    animation: pulse 2s infinite;
+
+  }
+
+  #rel-clock iframe {
+
+    display: block;
+
+    margin: 0 auto;
+
+  }
+
+  #close-clock {
+
+    position: absolute;
+
+    top: 3px;
+
+    right: 6px;
+
+    background: #006633;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 50%;
+
+    width: 22px;
+
+    height: 22px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    line-height: 22px;
+
+  }
+
+  @keyframes pulse {
+
+    0% { box-shadow: 0 0 10px #006633; }
+
+    50% { box-shadow: 0 0 20px #00cc66; }
+
+    100% { box-shadow: 0 0 10px #006633; }
+
+  }
+
+</style>
+
+<div id="rel-clock">
+
+  <button id="close-clock" onclick="document.getElementById('rel-clock').style.display='none'">×</button>
+
+  <iframe src="https://www.timeanddate.com/worldclock/fullscreen.html?n=522" frameborder="0" width="160" height="160"></iframe>
+
+</div>
+
+
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>Player Multimídia com Lista</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+
+    body {
+
+      background-color: #121212;
+
+      color: white;
+
+      font-family: Arial, sans-serif;
+
+      margin: 0;
+
+      padding: 20px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+    }
+
+    .button-list {
+
+      display: flex;
+
+      flex-direction: column;
+
+      width: 100%;
+
+      max-width: 800px;
+
+      gap: 10px;
+
+      margin-top: 20px;
+
+    }
+
+    button.link-btn {
+
+      padding: 10px;
+
+      background-color: #1DB954;
+
+      color: white;
+
+      border: none;
+
+      border-radius: 8px;
+
+      font-size: 16px;
+
+      cursor: pointer;
+
+      text-align: left;
+
+    }
+
+    .player-container {
+
+      margin-top: 20px;
+
+      width: 100%;
+
+      max-width: 800px;
+
+      aspect-ratio: 16/9;
+
+      position: relative;
+
+    }
+
+    video, audio, iframe {
+
+      width: 100%;
+
+      height: 100%;
+
+      border: none;
+
+      border-radius: 12px;
+
+    }
+
+    input {
+
+      width: 80%;
+
+      padding: 10px;
+
+      margin-top: 10px;
+
+      border-radius: 8px;
+
+      border: none;
+
+      font-size: 16px;
+
+    }
+
+    #loadBtn {
+
+      margin-top: 10px;
+
+      background-color: #2196F3;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <h2>Player Multimídia Dropbox (.txt)</h2>
+
+  <input type="text" id="txtUrl" placeholder="Cole o link do arquivo .txt do Dropbox">
+
+  <button id="loadBtn" onclick="loadList()">Carregar Lista</button>
+
+  <div class="button-list" id="linkList"></div>
+
+  <div class="player-container" id="playerContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+  <script>
+
+    function getExtension(url) {
+
+      return url.split('.').pop().split('?')[0].toLowerCase();
+
+    }
+
+    function getDropboxRawLink(url) {
+
+      return url.replace("www.dropbox.com", "dl.dropboxusercontent.com").replace("?dl=0", "");
+
+    }
+
+    function loadList() {
+
+      const txtUrl = document.getElementById("txtUrl").value.trim();
+
+      const rawUrl = getDropboxRawLink(txtUrl);
+
+      fetch(rawUrl)
+
+        .then(response => response.text())
+
+        .then(data => {
+
+          const links = data.split(/\r?\n/).filter(line => line.trim() !== "");
+
+          const list = document.getElementById("linkList");
+
+          list.innerHTML = "";
+
+          links.forEach((link, index) => {
+
+            const button = document.createElement("button");
+
+            button.className = "link-btn";
+
+            button.innerText = "Mídia " + (index + 1);
+
+            button.onclick = () => playMedia(link);
+
+            list.appendChild(button);
+
+          });
+
+        })
+
+        .catch(err => alert("Erro ao carregar a lista: " + err));
+
+    }
+
+    function playMedia(urlInput) {
+
+      const rawUrl = getDropboxRawLink(urlInput);
+
+      const ext = getExtension(rawUrl);
+
+      const container = document.getElementById("playerContainer");
+
+      container.innerHTML = "";
+
+      if (ext === "mp3") {
+
+        const audio = document.createElement("audio");
+
+        audio.controls = true;
+
+        audio.src = rawUrl;
+
+        container.appendChild(audio);
+
+      } else if (ext === "mp4") {
+
+        const video = document.createElement("video");
+
+        video.controls = true;
+
+        video.src = rawUrl;
+
+        container.appendChild(video);
+
+      } else if (ext === "m3u8") {
+
+        const video = document.createElement("video");
+
+        video.controls = true;
+
+        video.id = "hlsPlayer";
+
+        container.appendChild(video);
+
+        if (Hls.isSupported()) {
+
+          const hls = new Hls();
+
+          hls.loadSource(rawUrl);
+
+          hls.attachMedia(video);
+
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+
+          video.src = rawUrl;
+
+        }
+
+      } else if (ext === "html") {
+
+        const iframe = document.createElement("iframe");
+
+        iframe.src = rawUrl;
+
+        container.appendChild(iframe);
+
+      } else {
+
+        container.innerHTML = "<p>Formato não suportado: " + ext + "</p>";
+
+      }
+
+    }
+
+  </script>
+
+</body>
+
+</html> 
 
 <!DOCTYPE html>
 
