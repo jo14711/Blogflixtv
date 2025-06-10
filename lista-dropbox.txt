@@ -1,0 +1,3 @@
+#EXTM3U
+#EXTINF:-1,Filme Exemplo
+https://exemplo.com/filme.mp4
