@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Blogflixtv - Player</title>
+  <title>Blogflixtv - M3U Player</title>
   <style>
     body {
       margin: 0;
@@ -61,7 +61,6 @@
       font-weight: bold;
     }
 
-    /* QR Code flutuante */
     .qr-button {
       position: fixed;
       bottom: 20px;
@@ -84,7 +83,7 @@
     <a href="https://684651bf490c3ff215f9d3a9--fancy-fenglisu-8c907b.netlify.app/" target="_blank">🔐 Área Restrita</a>
   </div>
 
-  <h1>Blogflixtv - Player ao Vivo</h1>
+  <h1>Blogflixtv - Player ao Vivo (M3U)</h1>
 
   <div class="grid" id="playerContainer">Carregando lista...</div>
 
@@ -95,6 +94,7 @@
 
   <script>
     const listaUrl = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&dl=1";
+
     fetch(listaUrl)
       .then(r => r.text())
       .then(texto => {
@@ -102,35 +102,47 @@
         const container = document.getElementById("playerContainer");
         container.innerHTML = "";
 
-        linhas.forEach((link, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
-          let media;
+        let tituloAtual = "Conteúdo";
 
-          if (link.endsWith(".mp4") || link.endsWith(".m3u8") || link.endsWith(".ts")) {
-            media = document.createElement("video");
-            media.src = link;
-            media.controls = true;
-          } else if (link.endsWith(".mp3")) {
-            media = document.createElement("audio");
-            media.src = link;
-            media.controls = true;
-          } else if (link.includes("youtube.com") || link.includes("youtu.be")) {
-            const videoId = link.split("v=")[1]?.split("&")[0] || link.split("/").pop();
-            media = document.createElement("iframe");
-            media.src = `https://www.youtube.com/embed/${videoId}`;
-            media.allowFullscreen = true;
-          } else {
-            media = document.createElement("iframe");
-            media.src = link;
+        for (let i = 0; i < linhas.length; i++) {
+          const linha = linhas[i].trim();
+
+          if (linha.startsWith("#EXTINF:")) {
+            const partes = linha.split(",");
+            if (partes.length > 1) {
+              tituloAtual = partes[1].trim();
+            }
+          } else if (linha && !linha.startsWith("#")) {
+            const link = linha;
+            const card = document.createElement("div");
+            card.className = "card";
+            let media;
+
+            if (link.endsWith(".mp4") || link.endsWith(".m3u8") || link.endsWith(".ts")) {
+              media = document.createElement("video");
+              media.src = link;
+              media.controls = true;
+            } else if (link.endsWith(".mp3")) {
+              media = document.createElement("audio");
+              media.src = link;
+              media.controls = true;
+            } else if (link.includes("youtube.com") || link.includes("youtu.be")) {
+              const videoId = link.split("v=")[1]?.split("&")[0] || link.split("/").pop();
+              media = document.createElement("iframe");
+              media.src = `https://www.youtube.com/embed/${videoId}`;
+              media.allowFullscreen = true;
+            } else {
+              media = document.createElement("iframe");
+              media.src = link;
+            }
+
+            card.appendChild(media);
+            const desc = document.createElement("p");
+            desc.textContent = tituloAtual;
+            card.appendChild(desc);
+            container.appendChild(card);
           }
-
-          card.appendChild(media);
-          const desc = document.createElement("p");
-          desc.textContent = "Conteúdo " + (i + 1);
-          card.appendChild(desc);
-          container.appendChild(card);
-        });
+        }
       })
       .catch(err => {
         document.getElementById("playerContainer").innerHTML = "Erro ao carregar a lista.";
