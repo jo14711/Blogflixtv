@@ -9,3 +9,84 @@
   Redirecionando para o Blogflixtv...
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Blogflixtv</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #FFD700;
+      padding: 10px;
+      text-align: center;
+      color: black;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+    .card {
+      background-color: #1e1e1e;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #FFD70055;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+      margin-top: 10px;
+    }
+    #player-container {
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>Blogflixtv</header>
+  <div id="player-container"></div>
+  <div class="container" id="video-list">Carregando...</div>
+
+  <script>
+    async function carregarLista() {
+      const url = 'https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&raw=1';
+      const response = await fetch(url);
+      const text = await response.text();
+      const lines = text.split('\n').filter(l => l.trim() && !l.startsWith('#EXT'));
+      const list = document.getElementById('video-list');
+      list.innerHTML = '';
+
+      lines.forEach((link, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerText = `Canal ${index + 1}`;
+        card.onclick = () => {
+          document.getElementById('player-container').innerHTML = `
+            <iframe src="${link}" allowfullscreen></iframe>
+          `;
+        };
+        list.appendChild(card);
+      });
+    }
+
+    carregarLista();
+  </script>
+</body>
+</html>
+
