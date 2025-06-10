@@ -16,6 +16,20 @@
       background: #ff0;
       color: #000;
     }
+    .top-bar {
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      background: #111;
+    }
+    .top-bar a {
+      background: #ff0;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -46,15 +60,41 @@
       text-align: center;
       font-weight: bold;
     }
+
+    /* QR Code flutuante */
+    .qr-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fff;
+      border: 2px solid #ff0;
+      padding: 5px;
+      border-radius: 10px;
+      z-index: 999;
+    }
+    .qr-button img {
+      width: 80px;
+      height: 80px;
+    }
   </style>
 </head>
 <body>
 
+  <div class="top-bar">
+    <a href="https://684651bf490c3ff215f9d3a9--fancy-fenglisu-8c907b.netlify.app/" target="_blank">🔐 Área Restrita</a>
+  </div>
+
   <h1>Blogflixtv - Player ao Vivo</h1>
+
   <div class="grid" id="playerContainer">Carregando lista...</div>
 
+  <!-- QR Code flutuante -->
+  <a class="qr-button" href="https://blogflixtv.netlify.app/" target="_blank">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://blogflixtv.netlify.app/&size=100x100" alt="QR Code">
+  </a>
+
   <script>
-    const listaUrl = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=lntjyd6d&dl=1";
+    const listaUrl = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&dl=1";
     fetch(listaUrl)
       .then(r => r.text())
       .then(texto => {
