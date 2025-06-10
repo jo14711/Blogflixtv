@@ -1,366 +1,102 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>blogflixtv</title>
+  <meta charset="UTF-8">
+  <title>Blogflixtv - Player</title>
   <style>
     body {
       margin: 0;
-      background-color: #121212;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-    video {
-      width: 90%;
-      max-width: 800px;
-      border: 2px solid #ff5722;
-      border-radius: 12px;
-    }
-    select, button {
-      margin-top: 10px;
-      padding: 8px 16px;
-      background-color: #ff5722;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    select {
-      background-color: #222;
-      color: #fff;
-      margin-right: 10px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Player HLS Teste</h1>
-  <video id="video" controls autoplay></video>
-  <div>
-    <select id="streamSelector">
-      <option value="">Selecione um link .m3u8</option>
-      <option value="https://server1.mycinevs.com/SPTV1/tracks-v1a1/mono.ts.m3u8?token=f1m6Drtd3P60">Link Teste (cdn50.vip)</option>
-      <option value="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">Link Mux (funcional)</option>
-    </select>
-    <button onclick="loadStream()">Carregar</button>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script>
-    const video = document.getElementById('video');
-    const selector = document.getElementById('streamSelector');
-
-    function loadStream() {
-      const streamURL = selector.value;
-      if (!streamURL) return alert('Selecione um link primeiro.');
-
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(streamURL);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-          video.play();
-        });
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = streamURL;
-        video.addEventListener('loadedmetadata', function () {
-          video.play();
-        });
-      } else {
-        alert('Seu navegador não suporta HLS.');
-      }
-    }
-  </script>
-</body>
-</html>
-<style>
-
-  #video-background {
-
-    position: fixed;
-
-    right: 0;
-
-    bottom: 0;
-
-    min-width: 100%;
-
-    min-height: 100%;
-
-    z-index: -1;
-
-    object-fit: cover;
-
-  }
-
-  .post-body {
-
-    position: relative;
-
-    z-index: 1;
-
-    background: rgba(0, 0, 0, 0.4); /* fundo semitransparente pra contraste */
-
-    color: white;
-
-    padding: 20px;
-
-  }
-
-</style>
-
-<video autoplay muted loop id="video-background" playsinline>
-
-  <source src="https://piratetv.pro/wp-content/themes/Pirate%20TV%204v/assets/images/top-bg.mp4" type="video/mp4">
-
-  Seu navegador não suporta vídeo.
-
-</video>
-
-</style>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Blogflixtv - Início</title>
-  <style>
-    body { background-color: #f4f4f4; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    header { background-color: orange; color: white; padding: 1em; text-align: center; }
-    nav { background-color: #333; padding: 1em; text-align: center; }
-    nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; }
-    main { padding: 2em; text-align: center; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>🎬 Blogflixtv</h1>
-  </header>
-  <nav>
-    <a href="index.html">Início</a>
-    <a href="playcine.html">🔗 PlayCine</a>
-    <a href="player-lista.html">📺 Lista M3U8</a>
-  </nav>
-  <main>
-    <h2>Bem-vindo ao Blogflixtv</h2>
-    <p>Confira nossos conteúdos sobre filmes, séries e TV.</p>
-  </main>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rádios Retrô Anos 80</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
-    body {
-      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
-      font-family: 'Orbitron', sans-serif;
-      color: #fff;
-      padding: 40px;
-      margin: 0;
-    }
-
-    .radio-player {
-      background: rgba(0, 0, 0, 0.8);
-      border: 2px solid #ff00ff;
-      border-radius: 15px;
-      box-shadow: 0 0 20px #ff00ff;
-      padding: 20px;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
-    .radio-player h2 {
-      color: #00ffff;
-      text-shadow: 0 0 10px #00ffff;
-      margin-bottom: 15px;
-    }
-
-    audio {
-      width: 100%;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    .neon-border {
-      border: 3px solid #00ffff;
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px #00ffff;
-    }
-  </style>
-</head>
-<body>
-  <h1 style="text-align:center; text-shadow:0 0 20px #fff;">🎶 Estações Retrô Anos 80</h1>
-
-  <div class="radio-player">
-    <h2>Rádio 80s Euroti</h2>
-    <div class="neon-border">
-      <audio controls autoplay>
-        <source src="https://centova.euroti.com.br:20001/1/stream.mp3" type="audio/mpeg">
-        Seu navegador não suporta o player.
-      </audio>
-    </div>
-  </div>
-<div class="radio-player">
-  <h2>107,5 FM Joinville (Rádio 107,5 FM)</h2>
-  <div class="neon-border">
-    <!-- Player Radioly -->
-    <iframe src="https://cast2.youngtech.radio.br/radio/8290/radio" width="300" height="80" frameborder="0" scrolling="no"></iframe>
-  </div>
-</div>
-
-  
-  <div class="radio-player">
-    <h2>Rádio89 fm Joinville</h2>
-    <div class="neon-border">
-      <audio controls>
-        <source src="https://stm01.virtualcast.com.br:8302/89joinville" type="audio/mpeg">
-        Seu navegador não suporta o player.
-      </audio>
-    </div>
-  </div>
-
-  <div class="radio-player">
-    <h2>Rádio Exemplo 3</h2>
-    <div class="neon-border">
-      <audio controls>
-        <source src="https://outra-radio.com.br/stream" type="audio/mpeg">
-        Seu navegador não suporta o player.
-      </audio>
-    </div>
-  </div>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blogflixtv</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #111;
-      color: #fff;
-    }
-    header {
-      background-color: #e50914;
-      padding: 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-    nav {
+      font-family: sans-serif;
       background-color: #000;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 10px 0;
+      color: #fff;
     }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    section {
-      padding: 40px 20px;
+    h1 {
       text-align: center;
+      padding: 20px;
+      background: #ff0;
+      color: #000;
     }
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-    .card-container {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
       padding: 20px;
     }
     .card {
-      background: #222;
-      border-radius: 12px;
+      background: #111;
+      border: 2px solid #ff0;
       padding: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      transition: transform 0.3s;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff0a;
+      transition: transform 0.3s ease;
     }
     .card:hover {
-      transform: scale(1.03);
+      transform: scale(1.05);
     }
-    .admin-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #e50914;
-      color: white;
-      padding: 12px 20px;
+    .card video,
+    .card audio,
+    .card iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
       border-radius: 8px;
-      font-size: 16px;
-      text-decoration: none;
-      z-index: 9999;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      transition: all 0.3s ease;
     }
-    .admin-button:hover {
-      background: #b00610;
+    .card p {
+      margin-top: 10px;
+      text-align: center;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Blogflixtv</h1>
-  </header>
-  <nav>
-    <a href="#filmes">Filmes</a>
-    <a href="#series">Séries</a>
-    <a href="#tv">TV</a>
-  </nav>
 
-  <section id="filmes">
-    <h2>Filmes</h2>
-    <div class="card-container">
-      <div class="card">🎬 Filme 1</div>
-      <div class="card">🎬 Filme 2</div>
-      <div class="card">🎬 Filme 3</div>
-    </div>
-  </section>
+  <h1>Blogflixtv - Player ao Vivo</h1>
+  <div class="grid" id="playerContainer">Carregando lista...</div>
 
-  <section id="series">
-    <h2>Séries</h2>
-    <div class="card-container">
-      <div class="card">📺 Série 1</div>
-      <div class="card">📺 Série 2</div>
-      <div class="card">📺 Série 3</div>
-    </div>
-  </section>
+  <script>
+    const listaUrl = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=lntjyd6d&dl=1";
+    fetch(listaUrl)
+      .then(r => r.text())
+      .then(texto => {
+        const linhas = texto.trim().split("\n");
+        const container = document.getElementById("playerContainer");
+        container.innerHTML = "";
 
-  <section id="tv">
-    <h2>TV Ao Vivo</h2>
-    <div class="card-container">
-      <div class="card">📡 Canal 1</div>
-      <div class="card">📡 Canal 2</div>
-      <div class="card">📡 Canal 3</div>
-    </div>
-  </section>
+        linhas.forEach((link, i) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          let media;
 
-  <a href="https://684651bf490c3ff215f9d3a9--fancy-fenglisu-8c907b.netlify.app/" target="_blank" class="admin-button">
-    🎬 Área Restrita
-  </a>
-</body>
-</html>
+          if (link.endsWith(".mp4") || link.endsWith(".m3u8") || link.endsWith(".ts")) {
+            media = document.createElement("video");
+            media.src = link;
+            media.controls = true;
+          } else if (link.endsWith(".mp3")) {
+            media = document.createElement("audio");
+            media.src = link;
+            media.controls = true;
+          } else if (link.includes("youtube.com") || link.includes("youtu.be")) {
+            const videoId = link.split("v=")[1]?.split("&")[0] || link.split("/").pop();
+            media = document.createElement("iframe");
+            media.src = `https://www.youtube.com/embed/${videoId}`;
+            media.allowFullscreen = true;
+          } else {
+            media = document.createElement("iframe");
+            media.src = link;
+          }
 
-  
+          card.appendChild(media);
+          const desc = document.createElement("p");
+          desc.textContent = "Conteúdo " + (i + 1);
+          card.appendChild(desc);
+          container.appendChild(card);
+        });
+      })
+      .catch(err => {
+        document.getElementById("playerContainer").innerHTML = "Erro ao carregar a lista.";
+        console.error("Erro:", err);
+      });
+  </script>
+
 </body>
 </html>
