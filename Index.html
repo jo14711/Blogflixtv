@@ -35,14 +35,14 @@
       position: relative;
       z-index: 2;
       padding: 20px;
-      max-width: 700px;
+      max-width: 800px;
       margin: auto;
       text-align: center;
     }
 
     input, button {
       padding: 10px;
-      margin: 10px;
+      margin: 10px 5px;
       border: none;
       border-radius: 5px;
     }
@@ -82,11 +82,17 @@
     #m3u8Input {
       width: 80%;
     }
+
+    #listaCanais button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Fundo com vídeo animado 3D de futebol -->
   <video class="bg-video" autoplay loop muted playsinline>
     <source src="https://piratetv.pro/wp-content/themes/Pirate%20TV%204v/assets/images/top-bg.mp4" type="video/mp4">
   </video>
@@ -104,6 +110,9 @@
       <button onclick="carregarPlayer()">▶️ Carregar</button>
       <br><br>
       <video id="video" controls></video>
+
+      <h3 style="margin-top: 30px;">📡 Lista de Canais</h3>
+      <div id="listaCanais">Carregando lista...</div>
     </div>
   </div>
 
@@ -151,19 +160,24 @@
       `;
     }
 
-    function carregarPlayer() {
+    function carregarPlayer(url = null) {
       const video = document.getElementById('video');
-      const url = document.getElementById('m3u8Input').value.trim();
+      const source = url || document.getElementById('m3u8Input').value.trim();
+
+      if (!source) {
+        alert("Informe um link M3U8.");
+        return;
+      }
 
       if (Hls.isSupported()) {
         const hls = new Hls();
-        hls.loadSource(url);
+        hls.loadSource(source);
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           video.play();
         });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = url;
+        video.src = source;
         video.addEventListener('loadedmetadata', () => {
           video.play();
         });
@@ -171,6 +185,25 @@
         alert("Seu navegador não suporta M3U8.");
       }
     }
+
+    // Carregar lista do Dropbox
+    fetch("https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=fr2h7ey6&dl=1")
+      .then(res => res.text())
+      .then(text => {
+        const lista = text.split('\n').filter(l => l.trim() !== '');
+        const container = document.getElementById('listaCanais');
+        container.innerHTML = '';
+        lista.forEach((url, i) => {
+          const btn = document.createElement('button');
+          btn.innerText = `Canal ${i + 1}`;
+          btn.onclick = () => carregarPlayer(url.trim());
+          container.appendChild(btn);
+        });
+      })
+      .catch(err => {
+        document.getElementById('listaCanais').innerText = "Erro ao carregar a lista.";
+        console.error(err);
+      });
   </script>
 </body>
 </html>
