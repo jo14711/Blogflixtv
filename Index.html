@@ -1,24 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Blogflixtv - Início</title>
+
+  <style>
+
+    body {
+
+      background-color: #f4f4f4;
+
+      font-family: Arial, sans-serif;
+
+      margin: 0;
+
+      padding: 0;
+
+    }
+
+    header {
+
+      background-color: orange;
+
+      color: white;
+
+      padding: 1em;
+
+      text-align: center;
+
+      background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1fsZyuuHJdf5tklemY1VxfVFDMfYlcnDDisRS1VH-HQD9LxR7hyd2HenR&s=10'); /* Imagem de cinema */
+
+      background-size: cover;
+
+      background-position: center;
+
+      background-repeat: no-repeat;
+
+    }
+
+    nav {
+
+      background-color: #333;
+
+      padding: 1em;
+
+      text-align: center;
+
+    }
+
+    nav a {
+
+      color: white;
+
+      text-decoration: none;
+
+      margin: 0 15px;
+
+      font-weight: bold;
+
+    }
+
+    main {
+
+      padding: 2em;
+
+      text-align: center;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <header>
+
+    <h1>🎬 Blogflixtv</h1>
+
+  </header>
+
+  <nav>
+
+    <a href="index.html">Início</a>
+
+    <a href="playcine.html">🔗 PlayCine</a>
+
+  </nav>
+
+  <main>
+
+    <h2>Bem-vindo ao Blogflixtv</h2>
+
+    <p>Confira nossos conteúdos sobre filmes, séries e TV.</p>
+
+  </main>
+
+</body>
+
+</html>
 
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#000000" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css" />
-  <title>Blogflixtv</title>
+  <meta charset="UTF-8">
+  <title>Player Multimídia Dropbox</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      background-color: #1DB954;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .player-container {
+      margin-top: 20px;
+      width: 80%;
+      max-width: 800px;
+      aspect-ratio: 16/9;
+      position: relative;
+    }
+
+    video, audio, iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+    }
+  </style>
 </head>
-<body class="splash" onclick="window.location.href='login.html'">
-  <h1>Blogflixtv</h1>
-  <img src="qr.png" class="qr" />
-  <audio autoplay>
-    <source src="assets/audio/blogflixtv.mp3" type="audio/mpeg" />
-  </audio>
+<body>
+
+  <h2>Player Multimídia Dropbox</h2>
+  <input type="text" id="mediaUrl" placeholder="Cole o link do Dropbox aqui...">
+  <button onclick="playMedia()">Tocar</button>
+
+  <div class="player-container" id="playerContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
+    function getExtension(url) {
+      return url.split('.').pop().split('?')[0].toLowerCase();
+    }
+
+    function getDropboxRawLink(url) {
+      return url.replace("www.dropbox.com", "dl.dropboxusercontent.com").replace("?dl=0", "");
+    }
+
+    function playMedia() {
+      const urlInput = document.getElementById("mediaUrl").value.trim();
+      const rawUrl = getDropboxRawLink(urlInput);
+      const ext = getExtension(rawUrl);
+      const container = document.getElementById("playerContainer");
+      container.innerHTML = "";
+
+      if (ext === "mp3") {
+        const audio = document.createElement("audio");
+        audio.controls = true;
+        audio.src = rawUrl;
+        container.appendChild(audio);
+      } else if (ext === "mp4") {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.src = rawUrl;
+        container.appendChild(video);
+      } else if (ext === "m3u8") {
+        const video = document.createElement("video");
+        video.controls = true;
+        video.id = "hlsPlayer";
+        container.appendChild(video);
+
+        if (Hls.isSupported()) {
+          const hls = new Hls();
+          hls.loadSource(rawUrl);
+          hls.attachMedia(video);
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = rawUrl;
+        }
+      } else if (ext === "html") {
+        const iframe = document.createElement("iframe");
+        iframe.src = rawUrl;
+        container.appendChild(iframe);
+      } else {
+        container.innerHTML = "<p>Formato não suportado: " + ext + "</p>";
+      }
     }
   </script>
 </body>
