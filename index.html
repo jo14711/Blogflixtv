@@ -1,107 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Player Blogflixtv</title>
-  <style>
-    body {
-      background: #000;
-      color: #fff;
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-    iframe, video, audio {
-      max-width: 100%;
-      border: none;
-    }
-    #player {
-      width: 100%;
-      height: 60vh;
-      background: #111;
-      margin-bottom: 20px;
-    }
-    .card {
-      background: #222;
-      color: #fff;
-      margin: 5px;
-      padding: 10px;
-      border-radius: 10px;
-      display: inline-block;
-      cursor: pointer;
-    }
-    .card:hover {
-      background: #fcd203;
-      color: #000;
-    }
-  </style>
+  <meta http-equiv="refresh" content="0;url=splash.html">
+  <title>Blogflixtv</title>
 </head>
 <body>
-  <h1>🎬 Blogflixtv Player</h1>
-  <div id="player">Carregando player...</div>
-  <div id="lista"></div>
-
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script>
-    async function carregarLista() {
-      const url = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=u2c4s2pj&dl=1";
-      const res = await fetch(url);
-      const texto = await res.text();
-      const linhas = texto.split('\n');
-      const lista = [];
-      for (let i = 0; i < linhas.length; i++) {
-        if (linhas[i].startsWith('#EXTINF')) {
-          const titulo = linhas[i].split(',')[1] || 'Sem título';
-          const link = linhas[i + 1];
-          if (link && link.startsWith('http')) {
-            lista.push({ titulo, link });
-          }
-        }
-      }
-      exibirLista(lista);
-    }
-
-    function exibirLista(lista) {
-      const container = document.getElementById('lista');
-      container.innerHTML = '';
-      lista.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerText = item.titulo;
-        div.onclick = () => tocar(item.link);
-        container.appendChild(div);
-      });
-      if (lista[0]) tocar(lista[0].link);
-    }
-
-    function tocar(url) {
-      const player = document.getElementById('player');
-      if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        const videoId = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
-        player.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
-      } else if (url.endsWith('.mp3')) {
-        player.innerHTML = `<audio controls autoplay src="${url}"></audio>`;
-      } else if (url.endsWith('.mp4') || url.endsWith('.ts')) {
-        player.innerHTML = `<video controls autoplay src="${url}"></video>`;
-      } else if (url.endsWith('.html')) {
-        player.innerHTML = `<iframe src="${url}" width="100%" height="100%"></iframe>`;
-      } else if (url.endsWith('.m3u8')) {
-        player.innerHTML = `<video id="hls" controls autoplay width="100%" height="100%"></video>`;
-        const video = document.getElementById('hls');
-        if (Hls.isSupported()) {
-          const hls = new Hls();
-          hls.loadSource(url);
-          hls.attachMedia(video);
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-          video.src = url;
-        }
-      } else {
-        player.innerHTML = `<iframe src="${url}" width="100%" height="100%"></iframe>`;
-      }
-    }
-
-    carregarLista();
-  </script>
+  Redirecionando para o Blogflixtv...
 </body>
 </html>
