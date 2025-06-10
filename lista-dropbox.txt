@@ -1,7 +1,3 @@
 ##EXTM3U
-#EXTINF:-1 tvg-logo="logo.png" group-title="Filmes",Título do Filme
-https://meuservidor.com/video1.m3u8
-#EXTINF:-1 group-title="Séries",Série Exemplo
-https://meuservidor.com/video2.mp4
 #EXTINF:-1,RED RECORD
 https://stream.ads.ottera.tv/playlist.m3u8?network_id=5431
