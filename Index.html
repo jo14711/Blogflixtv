@@ -11,3 +11,181 @@
   </div>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Analisador + Player com Fundo Futebol 3D</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1;
+    }
+
+    video.bg-video {
+      position: fixed;
+      top: 0; left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      text-align: center;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    input {
+      width: 60%;
+    }
+
+    button {
+      background-color: #00b894;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #019875;
+    }
+
+    #resultado {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: left;
+    }
+
+    #player-container {
+      margin-top: 40px;
+    }
+
+    video#video {
+      width: 100%;
+      max-width: 700px;
+      height: auto;
+      background: black;
+      border-radius: 10px;
+    }
+
+    #m3u8Input {
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fundo com vídeo animado 3D de futebol -->
+  <video class="bg-video" autoplay loop muted playsinline>
+    <source src="https://cdn.jsdelivr.net/gh/jo14711/blogflixtv@main/futebol-fundo.webm" type="video/webm">
+    <source src="https://cdn.jsdelivr.net/gh/jo14711/blogflixtv@main/futebol-fundo.gif" type="image/gif">
+  </video>
+
+  <div class="container">
+    <h1>🔍 Analisador de Confrontos + Player</h1>
+
+    <input type="text" id="confronto" placeholder="Ex: Flamengo x Palmeiras">
+    <button onclick="analisar()">Analisar</button>
+    <div id="resultado"></div>
+
+    <div id="player-container">
+      <h2>📺 Player M3U8 ao Vivo</h2>
+      <input type="text" id="m3u8Input" placeholder="Cole aqui o link .m3u8">
+      <button onclick="carregarPlayer()">▶️ Carregar</button>
+      <br><br>
+      <video id="video" controls></video>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
+    const dados = {
+      "flamengo_palmeiras": { "time1": 4, "time2": 3, "empates": 3 },
+      "corinthians_sao paulo": { "time1": 6, "time2": 2, "empates": 2 },
+      "vasco_botafogo": { "time1": 5, "time2": 4, "empates": 1 }
+    };
+
+    function analisar() {
+      const input = document.getElementById('confronto').value.trim().toLowerCase();
+      const resultado = document.getElementById('resultado');
+      const times = input.split('x').map(t => t.trim());
+
+      if (times.length !== 2) {
+        resultado.innerText = "⚠️ Use o formato 'Time1 x Time2'";
+        return;
+      }
+
+      const [time1, time2] = times;
+      const key = `${time1}_${time2}`;
+      if (!dados[key]) {
+        resultado.innerText = "❌ Confronto não encontrado.";
+        return;
+      }
+
+      const confronto = dados[key];
+      const total = confronto.time1 + confronto.time2 + confronto.empates;
+      const pct1 = Math.round((confronto.time1 / total) * 100);
+      const pct2 = Math.round((confronto.time2 / total) * 100);
+      const pctE = 100 - pct1 - pct2;
+
+      resultado.innerHTML = `
+        <strong>${time1.toUpperCase()} x ${time2.toUpperCase()}</strong><br><br>
+        📊 Jogos: ${total}<br>
+        ✅ ${time1.toUpperCase()}: ${confronto.time1} vitórias<br>
+        ✅ ${time2.toUpperCase()}: ${confronto.time2} vitórias<br>
+        🤝 Empates: ${confronto.empates}<br><br>
+        🔮 <strong>Chances:</strong><br>
+        • ${time1.toUpperCase()}: ${pct1}%<br>
+        • Empate: ${pctE}%<br>
+        • ${time2.toUpperCase()}: ${pct2}%
+      `;
+    }
+
+    function carregarPlayer() {
+      const video = document.getElementById('video');
+      const url = document.getElementById('m3u8Input').value.trim();
+
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play();
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url;
+        video.addEventListener('loadedmetadata', () => {
+          video.play();
+        });
+      } else {
+        alert("Seu navegador não suporta M3U8.");
+      }
+    }
+  </script>
+</body>
+</html>
