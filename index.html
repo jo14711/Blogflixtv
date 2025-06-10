@@ -2,92 +2,106 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Blogflixtv - M3U Player</title>
+  <title>Player Blogflixtv</title>
   <style>
-    body { margin: 0; font-family: sans-serif; background-color: #000; color: #fff; }
-    h1 { text-align: center; padding: 20px; background: #ff0; color: #000; }
-    .top-bar { display: flex; justify-content: center; padding: 10px; background: #111; }
-    .top-bar a { background: #ff0; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
-    .card { background: #111; border: 2px solid #ff0; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px #ff0a; transition: transform 0.3s ease; }
-    .card:hover { transform: scale(1.05); }
-    .card video, .card audio, .card iframe { width: 100%; height: 200px; border: none; border-radius: 8px; }
-    .card p { margin-top: 10px; text-align: center; font-weight: bold; }
-    .qr-button { position: fixed; bottom: 20px; right: 20px; background: #fff; border: 2px solid #ff0; padding: 5px; border-radius: 10px; z-index: 999; }
-    .qr-button img { width: 80px; height: 80px; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    iframe, video, audio {
+      max-width: 100%;
+      border: none;
+    }
+    #player {
+      width: 100%;
+      height: 60vh;
+      background: #111;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: #222;
+      color: #fff;
+      margin: 5px;
+      padding: 10px;
+      border-radius: 10px;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .card:hover {
+      background: #fcd203;
+      color: #000;
+    }
   </style>
 </head>
 <body>
+  <h1>🎬 Blogflixtv Player</h1>
+  <div id="player">Carregando player...</div>
+  <div id="lista"></div>
 
-  <div class="top-bar">
-    <a href="https://684651bf490c3ff215f9d3a9--fancy-fenglisu-8c907b.netlify.app/" target="_blank">🔐 Área Restrita</a>
-  </div>
-
-  <h1>Blogflixtv - Player ao Vivo (M3U)</h1>
-
-  <div class="grid" id="playerContainer">Carregando lista...</div>
-
-  <a class="qr-button" href="https://blogflixtv.netlify.app/" target="_blank">
-    <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://blogflixtv.netlify.app/&size=100x100" alt="QR Code">
-  </a>
-
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
-    const listaUrl = "minha-lista.m3u";
-
-    fetch(listaUrl)
-      .then(r => r.text())
-      .then(texto => {
-        const linhas = texto.trim().split("\n");
-        const container = document.getElementById("playerContainer");
-        container.innerHTML = "";
-
-        let tituloAtual = "Conteúdo";
-
-        for (let i = 0; i < linhas.length; i++) {
-          const linha = linhas[i].trim();
-
-          if (linha.startsWith("#EXTINF:")) {
-            const partes = linha.split(",");
-            if (partes.length > 1) {
-              tituloAtual = partes[1].trim();
-            }
-          } else if (linha && !linha.startsWith("#")) {
-            const link = linha;
-            const card = document.createElement("div");
-            card.className = "card";
-            let media;
-
-            if (link.endsWith(".mp4") || link.endsWith(".m3u8") || link.endsWith(".ts")) {
-              media = document.createElement("video");
-              media.src = link;
-              media.controls = true;
-            } else if (link.endsWith(".mp3")) {
-              media = document.createElement("audio");
-              media.src = link;
-              media.controls = true;
-            } else if (link.includes("youtube.com") || link.includes("youtu.be")) {
-              const videoId = link.split("v=")[1]?.split("&")[0] || link.split("/").pop();
-              media = document.createElement("iframe");
-              media.src = `https://www.youtube.com/embed/${videoId}`;
-              media.allowFullscreen = true;
-            } else {
-              media = document.createElement("iframe");
-              media.src = link;
-            }
-
-            card.appendChild(media);
-            const desc = document.createElement("p");
-            desc.textContent = tituloAtual;
-            card.appendChild(desc);
-            container.appendChild(card);
+    async function carregarLista() {
+      const url = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=u2c4s2pj&dl=1";
+      const res = await fetch(url);
+      const texto = await res.text();
+      const linhas = texto.split('\n');
+      const lista = [];
+      for (let i = 0; i < linhas.length; i++) {
+        if (linhas[i].startsWith('#EXTINF')) {
+          const titulo = linhas[i].split(',')[1] || 'Sem título';
+          const link = linhas[i + 1];
+          if (link && link.startsWith('http')) {
+            lista.push({ titulo, link });
           }
         }
-      })
-      .catch(err => {
-        document.getElementById("playerContainer").innerHTML = "Erro ao carregar a lista.";
-        console.error("Erro:", err);
-      });
-  </script>
+      }
+      exibirLista(lista);
+    }
 
+    function exibirLista(lista) {
+      const container = document.getElementById('lista');
+      container.innerHTML = '';
+      lista.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerText = item.titulo;
+        div.onclick = () => tocar(item.link);
+        container.appendChild(div);
+      });
+      if (lista[0]) tocar(lista[0].link);
+    }
+
+    function tocar(url) {
+      const player = document.getElementById('player');
+      if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const videoId = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
+        player.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
+      } else if (url.endsWith('.mp3')) {
+        player.innerHTML = `<audio controls autoplay src="${url}"></audio>`;
+      } else if (url.endsWith('.mp4') || url.endsWith('.ts')) {
+        player.innerHTML = `<video controls autoplay src="${url}"></video>`;
+      } else if (url.endsWith('.html')) {
+        player.innerHTML = `<iframe src="${url}" width="100%" height="100%"></iframe>`;
+      } else if (url.endsWith('.m3u8')) {
+        player.innerHTML = `<video id="hls" controls autoplay width="100%" height="100%"></video>`;
+        const video = document.getElementById('hls');
+        if (Hls.isSupported()) {
+          const hls = new Hls();
+          hls.loadSource(url);
+          hls.attachMedia(video);
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = url;
+        }
+      } else {
+        player.innerHTML = `<iframe src="${url}" width="100%" height="100%"></iframe>`;
+      }
+    }
+
+    carregarLista();
+  </script>
 </body>
 </html>
