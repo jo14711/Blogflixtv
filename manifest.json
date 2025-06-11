@@ -1,10 +1,11 @@
 {
-  "name": "Blogflixtv",
-  "short_name": "Blogflixtv",
+  "name": "TV Portátil",
+  "short_name": "TVApp",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#000000",
+  "theme_color": "#ffcc00",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "icon-192.png",
