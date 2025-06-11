@@ -42,17 +42,15 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
   <script>
     function verificarLogin() {
-      const user = document.getElementById('usuario').value;
-      const pass = document.getElementById('senha').value;
+      const user = document.getElementById('usuario').value.trim();
+      const pass = document.getElementById('senha').value.trim();
       if (user === "megabox" && pass === "123456") {
         document.getElementById('login').style.display = 'none';
         document.getElementById('conteudo').style.display = 'block';
-        carregarLista();
       } else {
-        document.getElementById('erro').textContent = "Usuário ou senha incorretos!";
+        document.getElementById('erro').textContent = "❌ Usuário ou senha incorretos!";
       }
     }
 
