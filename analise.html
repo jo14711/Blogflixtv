@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Análise de Times - Blogflixtv</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    canvas {
+      max-width: 90%;
+      margin: auto;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: #FFD700;
+      color: #000;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 Análise de Chances dos Times</h1>
+  <canvas id="grafico"></canvas>
+  <a href="index.html">⬅️ Voltar</a>
+
+  <script>
+    fetch('dados.json')
+      .then(res => res.json())
+      .then(data => {
+        const ctx = document.getElementById('grafico').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: data.map(item => item.time),
+            datasets: [{
+              label: 'Chance de Classificação (%)',
+              data: data.map(item => item.porcentagem),
+              backgroundColor: '#FFD700'
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            scales: {
+              x: { beginAtZero: true, max: 100 }
+            }
+          }
+        });
+      });
+  </script>
+</body>
+</html>
