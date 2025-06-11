@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -198,117 +201,6 @@
           btn.innerText = `Canal ${i + 1}`;
           btn.onclick = () => carregarPlayer(url.trim());
           container.appendChild(btn);
-
-
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Blogflixtv - Player M3U8</title>
-  <style>
-    body {
-      background-color: #121212;
-      color: white;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #f1c40f;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-      color: #000;
-    }
-    #player {
-      width: 100%;
-      max-width: 800px;
-      margin: 1rem auto;
-      display: block;
-      border: 4px solid #f1c40f;
-      border-radius: 12px;
-    }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .card {
-      background-color: #1e1e1e;
-      border: 2px solid #f1c40f;
-      border-radius: 12px;
-      padding: 1rem;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.2s, background-color 0.2s;
-    }
-    .card:hover {
-      transform: scale(1.05);
-      background-color: #333;
-    }
-  </style>
-</head>
-<body>
-  <header>🎬 Blogflixtv - Lista M3U8</header>
-
-  <video id="player" controls autoplay></video>
-
-  <div class="container" id="cards"></div>
-
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script>
-    const listaURL = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=fcroa98l&dl=1";
-    const player = document.getElementById("player");
-    const cardsContainer = document.getElementById("cards");
-
-    function criarCard(titulo, url) {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.textContent = titulo;
-      card.onclick = () => tocarVideo(url);
-      cardsContainer.appendChild(card);
-    }
-
-    function tocarVideo(url) {
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(url);
-        hls.attachMedia(player);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          player.play();
-        });
-      } else if (player.canPlayType("application/vnd.apple.mpegurl")) {
-        player.src = url;
-        player.play();
-      } else {
-        alert("Seu navegador não suporta HLS");
-      }
-    }
-
-    fetch(listaURL)
-      .then(res => res.text())
-      .then(texto => {
-        const linhas = texto.trim().split("\n");
-        linhas.forEach((linha, i) => {
-          const titulo = `Canal ${i + 1}`;
-          criarCard(titulo, linha.trim());
-        });
-      })
-      .catch(err => {
-        console.error("Erro ao carregar lista:", err);
-        alert("Falha ao carregar a lista M3U8.");
-      });
-  </script>
-</body>
-</html>
-
-
-
-
-
-          
         });
       })
       .catch(err => {
