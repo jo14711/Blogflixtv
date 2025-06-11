@@ -1,86 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Player M3U Automático</title>
   <style>
     body {
-      background-color: #000;
-      color: #fff;
-      font-family: sans-serif;
       margin: 0;
-      padding: 20px;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
       text-align: center;
     }
     select {
+      margin: 20px auto;
       padding: 10px;
       font-size: 16px;
-      width: 80%;
-      max-width: 400px;
-      margin-bottom: 20px;
     }
     video {
-      width: 100%;
+      width: 90%;
       max-width: 800px;
       height: auto;
       background: #000;
+      border: 2px solid #fff;
     }
   </style>
 </head>
 <body>
-  <h2>📺 Escolha um canal</h2>
-  <select id="channelList">
+  <h2>🎥 Escolha um canal</h2>
+  <select id="channelSelector">
     <option>Carregando canais...</option>
   </select>
-  <br>
+  <br/>
   <video id="videoPlayer" controls autoplay></video>
 
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
-    const listUrl = 'https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=ajmh5d8u&raw=1';
+    const m3uUrl = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=ajmh5d8u&raw=1";
+    const selector = document.getElementById('channelSelector');
+    const player = document.getElementById('videoPlayer');
 
-    async function carregarLista() {
-      try {
-        const res = await fetch(listUrl);
-        const data = await res.text();
+    fetch(m3uUrl)
+      .then(response => response.text())
+      .then(data => {
         const lines = data.split('\n');
-        const canais = [];
+        const channels = [];
         for (let i = 0; i < lines.length; i++) {
           if (lines[i].startsWith('#EXTINF')) {
-            const nome = lines[i].split(',')[1];
-            const url = lines[i + 1];
-            canais.push({ nome, url });
+            const title = lines[i].split(',')[1]?.trim() || `Canal ${i}`;
+            const url = lines[i + 1]?.trim();
+            if (url && url.startsWith('http')) {
+              channels.push({ title, url });
+            }
           }
         }
 
-        const select = document.getElementById('channelList');
-        select.innerHTML = '';
-        canais.forEach((canal, index) => {
+        if (channels.length === 0) {
+          alert("Nenhum canal encontrado na lista.");
+          return;
+        }
+
+        selector.innerHTML = '';
+        channels.forEach((ch, idx) => {
           const opt = document.createElement('option');
-          opt.value = canal.url;
-          opt.textContent = canal.nome;
-          select.appendChild(opt);
+          opt.value = ch.url;
+          opt.textContent = ch.title;
+          selector.appendChild(opt);
         });
 
-        select.onchange = () => tocar(select.value);
-        tocar(canais[0].url);
-      } catch (e) {
-        alert('Erro ao carregar a lista');
-      }
-    }
+        player.src = channels[0].url;
 
-    function tocar(url) {
-      const video = document.getElementById('videoPlayer');
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(url);
-        hls.attachMedia(video);
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = url;
-      }
-    }
-
-    carregarLista();
+        selector.addEventListener('change', () => {
+          player.src = selector.value;
+          player.play();
+        });
+      })
+      .catch(() => {
+        alert("Erro ao carregar a lista");
+      });
   </script>
 </body>
 </html>
