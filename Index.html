@@ -1,109 +1,124 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🎬 Blogflixtv - Filmes ao Vivo</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background-color: #111;
-      color: #fff;
-    }
-    header {
-      background-color: #ffbb00;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-      color: #111;
-    }
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding: 1rem;
-      justify-content: center;
-    }
-    .card {
-      background-color: #222;
-      border-radius: 10px;
-      width: 300px;
-      padding: 1rem;
-      box-shadow: 0 0 10px #000;
-    }
-    .card h3 {
-      margin-top: 0;
-      font-size: 1.1rem;
-    }
-    iframe, video {
-      width: 100%;
-      height: 200px;
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
-    }
-    button {
-      width: 100%;
-      padding: 0.5rem;
-      background-color: #ffbb00;
-      border: none;
-      color: #111;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogflixtv</title>
+<style>
+  * { box-sizing: border-box; margin:0; padding:0; }
+  body, html { height:100%; font-family: sans-serif; background:#111; color:#fff; }
+  #splash { position:fixed; inset:0; display:flex; justify-content:center; align-items:center; flex-direction:column; background:#000; z-index:1000; }
+  #splash img { width:200px; margin-bottom:1rem; }
+  #splash button { padding:0.5rem 1rem; background:#ffbb00; border:none; color:#111; font-weight:bold; border-radius:4px; cursor:pointer; }
+  #loginModal { position:fixed; inset:0; background:rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center; flex-direction:column; }
+  #loginModal input, #loginModal button { margin:0.5rem; padding:0.5rem; border-radius:4px; border: none; }
+  #loginModal button { background:#ffbb00; font-weight:bold; color:#111; cursor:pointer; }
+  header { padding:1rem; background:#000; text-align:center; font-size:1.5rem; color:#ffbb00; }
+  nav { display:flex; justify-content:center; gap:1rem; padding:0.5rem; background:#222; }
+  nav a { color:#fff; text-decoration:none; font-weight:bold; }
+  nav a.active, nav a:hover { color:#111; background:#ffbb00; padding:0.5rem; border-radius:4px; }
+  .container { padding:1rem; display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; }
+  .card { background:#222; border-radius:8px; width:280px; padding:1rem; box-shadow:0 0 10px #000; }
+  .card h3 { margin-bottom:0.5rem; font-size:1.1rem; }
+  iframe, video { width:100%; height:160px; border-radius:6px; margin-bottom:0.5rem; }
+  footer { text-align:center; padding:1rem; background:#000; color:#aaa; margin-top:1rem; }
+</style>
 </head>
 <body>
 
-<header>🎬 Blogflixtv - Filmes Online</header>
-<div class="container" id="canalContainer">Carregando canais...</div>
+<div id="splash">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://SEU_SITE.github.io" alt="QR Code"/>
+  <button onclick="closeSplash()">Entrar</button>
+</div>
+
+<div id="loginModal" style="display:none;">
+  <h2>Login</h2>
+  <input id="user" type="text" placeholder="Usuário"/>
+  <input id="pass" type="password" placeholder="Senha"/>
+  <button onclick="login()">Login</button>
+</div>
+
+<header id="mainHeader" style="display:none;">Blogflixtv</header>
+
+<nav id="mainNav" style="display:none;">
+  <a href="#" data-cat="filmes" class="active" onclick="switchCat('filmes')">🎬 Filmes</a>
+  <a href="#" data-cat="series" onclick="switchCat('series')">📺 Séries</a>
+  <a href="#" data-cat="tv" onclick="switchCat('tv')">📡 TV</a>
+</nav>
+
+<div class="container" id="canalContainer"></div>
+<footer>Blogflixtv • Canais dinâmicos via lista Dropbox</footer>
 
 <script>
-  const dropboxURL = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=uootu97b&dl=1";
+  const listas = {
+    filmes: "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?dl=1"
+  };
+  let canaisByCat = { filmes: [] };
 
-  async function carregarLista() {
-    const resposta = await fetch(dropboxURL);
-    const texto = await resposta.text();
-    const linhas = texto.split("\n").map(l => l.trim()).filter(l => l !== "");
+  function closeSplash(){
+    document.getElementById('splash').style.display = 'none';
+    document.getElementById('loginModal').style.display = 'flex';
+  }
 
+  function login(){
+    const u = document.getElementById('user').value;
+    const p = document.getElementById('pass').value;
+    if(u && p){
+      document.getElementById('loginModal').style.display = 'none';
+      document.getElementById('mainHeader').style.display = 'block';
+      document.getElementById('mainNav').style.display = 'flex';
+      carregarCategoria('filmes');
+    } else {
+      alert("Informe usuário e senha");
+    }
+  }
+
+  async function carregarCategoria(cat){
+    const resp = await fetch(listas[cat]);
+    const text = await resp.text();
+    const linhas = text.split("\n").map(l=>l.trim()).filter(Boolean);
     const canais = [];
-    for (let i = 0; i < linhas.length; i++) {
-      if (linhas[i].startsWith("#EXTINF")) {
-        const titulo = linhas[i].split(",")[1] || "Sem nome";
-        const url = linhas[i + 1] || "";
-        if (url) canais.push({ titulo, url });
+    for(let i=0; i<linhas.length; i++){
+      if(linhas[i].startsWith("#EXTINF")){
+        const title = linhas[i].split(",")[1] || "Sem nome";
+        const url = linhas[i+1];
+        canais.push({ title, url });
       }
     }
+    canaisByCat[cat] = canais;
+    renderCanais(canais);
+  }
 
-    const container = document.getElementById("canalContainer");
-    container.innerHTML = "";
-
-    canais.forEach(canal => {
-      const card = document.createElement("div");
-      card.className = "card";
-
-      let playerHTML = "";
-
-      if (canal.url.includes("youtube.com") || canal.url.includes("youtu.be")) {
-        playerHTML = `<iframe src="${canal.url}" allowfullscreen></iframe>`;
-      } else if (canal.url.endsWith(".mp4")) {
-        playerHTML = `<video controls src="${canal.url}"></video>`;
+  function renderCanais(canais){
+    const cont = document.getElementById('canalContainer');
+    cont.innerHTML = '';
+    canais.forEach(ch => {
+      const card = document.createElement('div');
+      card.className="card";
+      let player="";
+      if(ch.url.includes("youtube.com")||ch.url.includes("youtu.be")){
+        player = `<iframe src="${ch.url}" allowfullscreen></iframe>`;
+      } else if(ch.url.endsWith(".mp4")){
+        player = `<video controls src="${ch.url}"></video>`;
       } else {
-        playerHTML = `<video controls autoplay src="${canal.url}" type="application/x-mpegURL"></video>`;
+        player = `<video controls autoplay src="${ch.url}" type="application/x-mpegURL"></video>`;
       }
-
-      card.innerHTML = `
-        <h3>${canal.titulo}</h3>
-        ${playerHTML}
-        <button onclick="window.open('${canal.url}', '_blank')">Abrir</button>
-      `;
-      container.appendChild(card);
+      card.innerHTML = `<h3>${ch.title}</h3>${player}`;
+      cont.appendChild(card);
     });
   }
 
-  carregarLista();
+  function switchCat(cat){
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    document.querySelector('nav a[data-cat="'+cat+'"]').classList.add('active');
+    if(!canaisByCat[cat] || canaisByCat[cat].length === 0){
+      carregarCategoria(cat);
+    } else {
+      renderCanais(canaisByCat[cat]);
+    }
+  }
 </script>
 
 </body>
-</html>
+</html>,
