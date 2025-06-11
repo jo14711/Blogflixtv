@@ -1,18 +1,56 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player - Blogflixtv</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Player M3U</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+    }
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+    }
+    select {
+      display: block;
+      margin: 20px auto;
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Bem-vindo ao Blogflixtv</h1>
-  <p>Você está logado.</p>
-  <!-- Aqui pode entrar o player -->
-  <video controls width="100%" autoplay>
-    <source src="https://example.com/video.mp4" type="video/mp4">
-    Seu navegador não suporta o vídeo.
-  </video>
+  <h2>📺 Escolha um canal</h2>
+  <select id="channelList"></select>
+  <iframe id="player" allowfullscreen></iframe>
+
+  <script>
+    async function loadChannels() {
+      const response = await fetch('../Listas/minha-lista.m3u');
+      const text = await response.text();
+      const lines = text.split('\n').filter(line => line.includes('http'));
+      const select = document.getElementById('channelList');
+      lines.forEach(url => {
+        const option = document.createElement('option');
+        option.value = url;
+        option.textContent = url.split('/').pop();
+        select.appendChild(option);
+      });
+      select.onchange = () => {
+        document.getElementById('player').src = select.value;
+      };
+    }
+    loadChannels();
+  </script>
 </body>
 </html>
