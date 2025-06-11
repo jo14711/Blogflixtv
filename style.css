@@ -1,51 +1,51 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #111;
+body, html {
+  margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  background: #0c1f3d;
   color: #fff;
+  height: 100%;
 }
-
-h1, h2 {
-  text-align: center;
-  margin: 20px;
-  color: #ffcc00;
+#login, #app {
+  display: none;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-
-.btn {
-  display: inline-block;
-  margin: 20px auto;
-  padding: 15px 30px;
-  background-color: #ffcc00;
-  color: #000;
-  font-weight: bold;
-  border: none;
+#login.active, #app.active {
+  display: flex;
+}
+input, button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 16px;
+}
+#canalList {
+  height: 300px;
+  overflow-y: auto;
+  width: 90%;
+  max-width: 600px;
+  background: #142e54;
+  padding: 10px;
   border-radius: 10px;
-  text-decoration: none;
-  font-size: 18px;
-  transition: background 0.3s ease;
 }
-.btn:hover {
-  background-color: #ffd633;
+.canal {
+  margin: 5px 0;
+  padding: 5px;
+  background: #1a3b6e;
+  border-radius: 5px;
   cursor: pointer;
 }
-
-select {
-  display: block;
-  margin: 0 auto 20px auto;
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  width: 80%;
-  max-width: 600px;
+video {
+  width: 90%;
+  max-width: 800px;
+  margin-top: 10px;
+  border: 2px solid #3da1ff;
+  border-radius: 10px;
 }
-
-iframe {
-  display: block;
-  margin: 0 auto;
-  width: 100%;
-  height: 500px;
-  border: none;
-  background: #000;
+#search {
+  margin: 10px 0;
+  width: 80%;
+  max-width: 400px;
+  padding: 10px;
 }
