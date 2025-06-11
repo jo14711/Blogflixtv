@@ -1,101 +1,82 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-
 <head>
-
-  <meta charset="UTF-8">
-
-  <title>MegaBoxplus WebTV</title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blogflixtv - Futebol ao Vivo</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
   <style>
-
-    body { margin: 0; font-family: sans-serif; background: #111; color: #fff; }
-
-    header { background: #0077ff; padding: 1rem; text-align: center; font-size: 1.5rem; color: white; }
-
-    #login, #conteudo { display: none; padding: 2rem; max-width: 600px; margin: auto; text-align: center; }
-
-    input { padding: 0.5rem; margin: 0.5rem 0; width: 100%; border-radius: 5px; border: none; }
-
-    button { padding: 0.5rem 1rem; border: none; background: #333; color: #fff; cursor: pointer; border-radius: 5px; }
-
-    button:hover { background: #555; }
-
-    iframe { width: 100%; height: 90vh; border: none; border-radius: 8px; margin-top: 1rem; }
-
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to top, #111, #222);
+      color: #fff;
+    }
+    header {
+      background: #FFD700;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #000;
+    }
+    .player-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px;
+    }
+    iframe {
+      width: 90%;
+      height: 450px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      gap: 1rem;
+    }
+    .buttons a {
+      background: #FFD700;
+      color: #000;
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .qr {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .qr img {
+      width: 100px;
+    }
   </style>
-
 </head>
-
 <body>
 
-  <header>MegaBoxplus WebTV</header>
+  <header>📺 Blogflixtv - Futebol ao Vivo</header>
 
-  <div id="login">
-
-    <h2>🔒 Acesso Restrito</h2>
-
-    <input type="text" id="usuario" placeholder="Usuário">
-
-    <input type="password" id="senha" placeholder="Senha">
-
-    <button onclick="verificarLogin()">Entrar</button>
-
-    <p id="erro" style="color: red;"></p>
-
+  <div class="player-container">
+    <iframe src="https://www.playcinevs.info/s/2966" allowfullscreen></iframe>
   </div>
 
-  <div id="conteudo">
-
-    <h2>🎬 Canal PlayCine</h2>
-
-    <div style="width: 100%; max-width: 720px; margin: auto; background: #000; position: relative; padding-top: 56.25%;">
-
-  <a href="http://www.playcinevs.info/m/296" target="_blank" rel="noopener noreferrer"
-
-     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; text-decoration: none; background: rgba(0,0,0,0.6);">
-
-    ▶️ Assistir no PlayCine
-
-  </a>
-
-</div>
-
+  <div class="buttons">
+    <a href="analise.html">📊 Ver Análise de Times</a>
+    <a href="https://684651bf490c3ff215f9d3a9--fancy-fenglisu-8c907b.netlify.app/" target="_blank">🔐 Área Restrita</a>
   </div>
 
-  <script>
-
-    function verificarLogin() {
-
-      const user = document.getElementById('usuario').value.trim();
-
-      const pass = document.getElementById('senha').value.trim();
-
-      if (user === "megabox" && pass === "123456") {
-
-        document.getElementById('login').style.display = 'none';
-
-        document.getElementById('conteudo').style.display = 'block';
-
-      } else {
-
-        document.getElementById('erro').textContent = "❌ Usuário ou senha incorretos!";
-
-      }
-
-    }
-
-    window.onload = () => {
-
-      document.getElementById('login').style.display = 'block';
-
-    }
-
-  </script>
+  <div class="qr">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://t.me/+J1PkeuLpiLNlOTZh&size=100x100" alt="QR Telegram">
+  </div>
 
 </body>
-
 </html>
