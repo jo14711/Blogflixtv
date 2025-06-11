@@ -2,41 +2,36 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <title>Player M3U</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TV Portátil</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background: #111;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-    h1 {
-      margin-bottom: 20px;
-    }
-    .btn {
-      display: inline-block;
-      margin: 10px;
-      padding: 15px 25px;
-      background: #ffcc00;
-      color: #000;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 10px;
-      transition: background 0.3s;
-    }
-    .btn:hover {
-      background: #ffd633;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🎬 TV Portátil</h1>
-  <a class="btn" href="player.html">Abrir Lista de Canais</a>
+  <h2>📺 Escolha um canal</h2>
+  <select id="channelList"></select>
+  <iframe id="player" allowfullscreen></iframe>
+
+  <script>
+    async function loadChannels() {
+      const response = await fetch("https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=ajmh5d8u&dl=1");
+      const text = await response.text();
+      const lines = text.split('\n').filter(line => line.includes('http'));
+      const select = document.getElementById('channelList');
+      lines.forEach((url, index) => {
+        const option = document.createElement('option');
+        option.value = url.trim();
+        option.textContent = `Canal ${index + 1}`;
+        select.appendChild(option);
+      });
+      select.onchange = () => {
+        document.getElementById('player').src = select.value;
+      };
+      if (select.options.length > 0) {
+        select.selectedIndex = 0;
+        document.getElementById('player').src = select.value;
+      }
+    }
+    loadChannels();
+  </script>
 </body>
 </html>
