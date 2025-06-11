@@ -2,59 +2,68 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Análise de Times - Blogflixtv</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
   <style>
     body {
-      background: #111;
-      color: #fff;
-      font-family: sans-serif;
-      padding: 20px;
-      text-align: center;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: #111;
+      font-family: 'Roboto', sans-serif;
     }
-    canvas {
-      max-width: 90%;
+    header {
+      background-color: #FFD700;
+      color: #000;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    main {
+      padding: 20px;
+      max-width: 1000px;
       margin: auto;
     }
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 15px;
-      background: #FFD700;
-      color: #000;
+    h2 {
+      color: #333;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 5px;
+    }
+    .time {
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #f9f9f9;
+      border-left: 5px solid #FFD700;
       border-radius: 6px;
-      text-decoration: none;
+    }
+    .time strong {
+      color: #000;
     }
   </style>
 </head>
 <body>
-  <h1>📊 Análise de Chances dos Times</h1>
-  <canvas id="grafico"></canvas>
-  <a href="index.html">⬅️ Voltar</a>
 
-  <script>
-    fetch('dados.json')
-      .then(res => res.json())
-      .then(data => {
-        const ctx = document.getElementById('grafico').getContext('2d');
-        new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: data.map(item => item.time),
-            datasets: [{
-              label: 'Chance de Classificação (%)',
-              data: data.map(item => item.porcentagem),
-              backgroundColor: '#FFD700'
-            }]
-          },
-          options: {
-            indexAxis: 'y',
-            scales: {
-              x: { beginAtZero: true, max: 100 }
-            }
-          }
-        });
-      });
-  </script>
+  <header>📊 Análise de Times - Blogflixtv</header>
+
+  <main>
+    <h2>Times com maiores chances de avançar</h2>
+
+    <div class="time"><strong>Palmeiras</strong> — Chance: 95%</div>
+    <div class="time"><strong>Manchester City</strong> — Chance: 93%</div>
+    <div class="time"><strong>Real Madrid</strong> — Chance: 92%</div>
+    <div class="time"><strong>Flamengo</strong> — Chance: 89%</div>
+    <div class="time"><strong>Al Ahly</strong> — Chance: 84%</div>
+
+    <h2>Times com menor chance de passar da fase</h2>
+
+    <div class="time"><strong>Auckland City</strong> — Chance: 12%</div>
+    <div class="time"><strong>Petrolina FC</strong> — Chance: 18%</div>
+    <div class="time"><strong>San Lorenzo</strong> — Chance: 27%</div>
+    <div class="time"><strong>Club León</strong> — Chance: 34%</div>
+    <div class="time"><strong>Botafogo</strong> — Chance: 39%</div>
+  </main>
+
 </body>
 </html>
