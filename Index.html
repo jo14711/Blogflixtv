@@ -3,143 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <title>MegaBoxplus WebTV</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body, html {
-      margin: 0; padding: 0;
-      font-family: Arial, sans-serif;
-      background: #0c1f3d;
-      color: #fff;
-      height: 100%;
-    }
-    #login, #app {
-      display: none;
-      height: 100vh;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-    #login.active, #app.active {
-      display: flex;
-    }
-    input, button {
-      margin: 5px;
-      padding: 10px;
-      font-size: 16px;
-    }
-    #canalList {
-      height: 300px;
-      overflow-y: auto;
-      width: 90%;
-      max-width: 600px;
-      background: #142e54;
-      padding: 10px;
-      border-radius: 10px;
-    }
-    .canal {
-      margin: 5px 0;
-      padding: 5px;
-      background: #1a3b6e;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    video {
-      width: 90%;
-      max-width: 800px;
-      margin-top: 10px;
-      border: 2px solid #3da1ff;
-      border-radius: 10px;
-    }
-    #search {
-      margin: 10px 0;
-      width: 80%;
-      max-width: 400px;
-      padding: 10px;
-    }
+    body { margin: 0; font-family: sans-serif; background: #111; color: #fff; }
+    header { background: #0077ff; padding: 1rem; text-align: center; font-size: 1.5rem; }
+    #filtros { display: flex; gap: 1rem; justify-content: center; margin: 1rem 0; flex-wrap: wrap; }
+    button { padding: 0.5rem 1rem; border: none; background: #333; color: #fff; cursor: pointer; border-radius: 5px; }
+    button:hover { background: #555; }
+    #lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; padding: 1rem; }
+    .item { background: #222; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
+    .item:hover { transform: scale(1.03); }
+    .item img { width: 100%; height: 140px; object-fit: cover; }
+    .item h3 { margin: 0; padding: 0.5rem; font-size: 1rem; }
+    iframe { width: 100%; height: 360px; border: none; display: none; margin-top: 1rem; }
   </style>
 </head>
 <body>
+  <header>MegaBoxplus WebTV</header>
+  <div id="filtros"></div>
+  <div id="lista"></div>
+  <iframe id="player" allowfullscreen></iframe>
 
-<div id="login" class="active">
-  <h2>MegaBoxplus</h2>
-  <input type="text" id="user" placeholder="Usuário">
-  <input type="password" id="pass" placeholder="Senha">
-  <button onclick="login()">Entrar</button>
-</div>
-
-<div id="app">
-  <h3>Bem-vindo ao MegaBoxplus</h3>
-  <input type="text" id="search" placeholder="Buscar canal..." oninput="filtrarCanais()">
-  <div id="canalList"></div>
-  <video id="player" controls autoplay></video>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script>
-  const listaURL = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=ajmh5d8u&dl=1";
-
-  const login = () => {
-    const u = document.getElementById('user').value;
-    const p = document.getElementById('pass').value;
-    if (u === 'megabox' && p === 'plus123') {
-      document.getElementById('login').classList.remove('active');
-      document.getElementById('app').classList.add('active');
-      carregarLista();
-    } else {
-      alert("Usuário ou senha inválidos!");
-    }
-  }
-
-  let canais = [];
-
-  async function carregarLista() {
-    try {
-      const res = await fetch(listaURL);
-      const txt = await res.text();
-      const linhas = txt.split('\n');
-      for (let i = 0; i < linhas.length; i++) {
-        if (linhas[i].startsWith('#EXTINF')) {
-          const nome = linhas[i].split(',')[1]?.trim();
-          const url = linhas[i + 1]?.trim();
-          canais.push({ nome, url });
-        }
-      }
-      mostrarCanais(canais);
-    } catch (e) {
-      alert("Erro ao carregar lista.");
-    }
-  }
-
-  function mostrarCanais(lista) {
-    const cont = document.getElementById('canalList');
-    cont.innerHTML = '';
-    lista.forEach(c => {
-      const div = document.createElement('div');
-      div.className = 'canal';
-      div.innerText = c.nome;
-      div.onclick = () => tocar(c.url);
-      cont.appendChild(div);
-    });
-  }
-
-  function filtrarCanais() {
-    const termo = document.getElementById('search').value.toLowerCase();
-    const filtrados = canais.filter(c => c.nome.toLowerCase().includes(termo));
-    mostrarCanais(filtrados);
-  }
-
-  function tocar(url) {
-    const video = document.getElementById('player');
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(url);
-      hls.attachMedia(video);
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = url;
-    } else {
-      alert("Seu navegador não suporta HLS.");
-    }
-  }
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
