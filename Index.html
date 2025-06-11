@@ -1,335 +1,43 @@
+
 <!DOCTYPE html>
-
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
-
-  <meta charset="UTF-8">
-
-  <title>FutebolPlus – Blog Esportivo</title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TV Portátil</title>
   <style>
-
-    body { margin:0; padding:0; font-family:Arial,sans-serif; background:#000; color:#eee; }
-
-    .bg-video { position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; }
-
-    body::before { content:""; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1; }
-
-    .container { position:relative; z-index:2; max-width:900px; margin:auto; padding:20px; }
-
-    h1,h2,h3 { text-align:center; color:#fff; }
-
-    input, button { padding:10px; margin:5px; border:none; border-radius:5px; }
-
-    button { background:#00b894; color:#fff; cursor:pointer; }
-
-    button:hover { background:#019875; }
-
-    .card { background:rgba(255,255,255,0.1); padding:15px; border-radius:8px; margin:20px 0; }
-
-    #qr { position:fixed; bottom:20px; right:20px; width:80px; height:80px; }
-
-    video#video { width:100%; max-width:800px; border-radius:10px; background:#000; }
-
-    #listaCanais button { display:block; width:100%; margin:5px 0; font-size:14px; }
-
-    table { width:100%; border-collapse:collapse; }
-
-    th,td { padding:8px; border-bottom:1px solid #444; text-align:left; }
-
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 25px;
+      background: #ffcc00;
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #ffd633;
+    }
   </style>
-
 </head>
-
 <body>
-
-  <video class="bg-video" autoplay loop muted playsinline>
-
-    <source src="https://piratetv.pro/wp-content/themes/Pirate%20TV%204v/assets/images/top-bg.mp4" type="video/mp4">
-
-  </video>
-
-  <div class="container">
-
-    <h1>FutebolPlus</h1>
-
-    <h2>Análises, Previsões, Notícias & Player</h2>
-
-    <div class="card">
-
-      <input id="confronto" placeholder="Ex: Flamengo x Palmeiras" />
-
-      <button onclick="analisar()">Analisar</button>
-
-      <div id="resultado"></div>
-
-    </div>
-
-    <div id="cbf" class="card">
-
-      <div id="brTabela">Carregando classificação...</div>
-
-      <div id="brJogos">Carregando jogos...</div>
-
-    </div>
-
-    <div class="card">
-
-      <h3>📅 Previsão de Jogos</h3>
-
-      <div id="listaPrevisoes">Carregando previsões...</div>
-
-    </div>
-
-    <div class="card">
-
-      <h3>📰 Últimas do Futebol</h3>
-
-      <div id="newsContainer">Carregando notícias...</div>
-
-    </div>
-
-    <div class="card">
-
-      <h2>📺 Player M3U8 ao Vivo</h2>
-
-      <input id="m3u8Input" placeholder="Cole link ou escolha Canal" />
-
-      <button onclick="carregarPlayer()">▶️ Carregar</button>
-
-      <video id="video" controls></video>
-
-      <h3>📡 Lista de Canais</h3>
-
-      <div id="listaCanais">Carregando lista...</div>
-
-    </div>
-
-  </div>
-
-  <img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://futebolplus.netlify.app" alt="QR Code">
-
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-
-  <script>
-
-    // Analisador
-
-    const dados = {
-
-      "flamengo_palmeiras":{time1:4,time2:3,empates:3},
-
-      "corinthians_sao paulo":{time1:6,time2:2,empates:2},
-
-      "vasco_botafogo":{time1:5,time2:4,empates:1}
-
-    };
-
-    function analisar(){
-
-      let t = document.getElementById('confronto').value.toLowerCase().split('x').map(x=>x.trim());
-
-      let res = document.getElementById('resultado');
-
-      if (t.length!==2){ return res.innerText="⚠️ Use 'Time1 x Time2'"; }
-
-      let d = dados[`${t[0]}_${t[1]}`];
-
-      if (!d) return res.innerText="❌ Confronto não encontrado.";
-
-      let tot=d.time1+d.time2+d.empates, p1=Math.round(d.time1/tot*100), p2=Math.round(d.time2/tot*100), pe=100-p1-p2;
-
-      res.innerHTML=`<strong>${t[0].toUpperCase()} x ${t[1].toUpperCase()}</strong><br>
-
-        Jogos:${tot} • ${t[0]}:${d.time1} • ${t[1]}:${d.time2} • Empates:${d.empates}<br>
-
-        Chances → ${t[0]}:${p1}% | Empate:${pe}% | ${t[1]}:${p2}%`;
-
-    }
-
-    // Previsões fictícias
-
-    const proximos = [
-
-      {a:"Palmeiras", b:"Corinthians", date:"2025-06-15 19:30"},
-
-      {a:"Flamengo", b:"Atlético‑MG", date:"2025-06-16 21:00"},
-
-      {a:"Grêmio", b:"São Paulo", date:"2025-06-17 18:00"}
-
-    ];
-
-    function geraPrevisoes(){
-
-      let html="";
-
-      proximos.forEach(g=>{
-
-        let r=Math.random(), wa= Math.round(40+r*40), wb= Math.round(40+(1-r)*40), we=100-wa-wb;
-
-        html+=`<div><strong>${g.a} x ${g.b}</strong> — ${g.date}<br>
-
-        Chances: ${g.a}:${wa}% | Empate:${we}% | ${g.b}:${wb}%</div><hr>`;
-
-      });
-
-      document.getElementById('listaPrevisoes').innerHTML=html;
-
-    }
-
-    // Notícias via RSS
-
-    async function carregaNoticias(){
-
-      const feeds=["https://ge.globo.com/rss/futebol/","https://www.espn.com.br/espn/rss/futebol"];
-
-      let html="";
-
-      for (let u of feeds){
-
-        let res=await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`);
-
-        let xml=await res.text(), d=new DOMParser().parseFromString(xml,"application/xml");
-
-        Array.from(d.querySelectorAll("item")).slice(0,4)
-
-          .forEach(it=> html+=`<a href="${it.querySelector("link").textContent}" target="_blank">${it.querySelector("title").textContent}</a><br>`);
-
-      }
-
-      document.getElementById('newsContainer').innerHTML=html;
-
-    }
-
-    // Player + Canais Dropbox
-
-    function carregarPlayer(url=null){
-
-      const src=url||document.getElementById('m3u8Input').value.trim();
-
-      if (!src) return alert("Informe um link M3U8.");
-
-      const video=document.getElementById('video');
-
-      if (Hls.isSupported()){
-
-        const hls=new Hls();
-
-        hls.loadSource(src); hls.attachMedia(video);
-
-        hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play());
-
-      } else if(video.canPlayType('application/vnd.apple.mpegurl')){
-
-        video.src=src; video.onloadedmetadata=()=>video.play();
-
-      } else alert("Navegador não suporta M3U8.");
-
-    }
-
-    async function carregaLista(){
-
-      try {
-
-        let t = await (await fetch("https://www.dropbox.com/scl/fi/2qrnsck786xi5fmlink?dl=1")).text();
-
-        let lines=t.split("\n"), cnt=document.getElementById('listaCanais');
-
-        cnt.innerHTML="";
-
-        for (let i=0; i<lines.length; i++){
-
-          if (lines[i].startsWith("#EXTINF")){
-
-            let title=lines[i].split(",")[1].trim()||`Canal ${i}`;
-
-            let url=lines[++i].trim();
-
-            let btn=document.createElement("button");
-
-            btn.innerText=title; btn.onclick=()=>carregarPlayer(url);
-
-            cnt.appendChild(btn);
-
-          }
-
-        };
-
-      } catch(e){
-
-        console.error(e);
-
-        document.getElementById('listaCanais').innerText="Erro ao carregar lista.";
-
-      }
-
-    }
-
-    // API‑Futebol – CBF
-
-    const API_TOKEN = 'live_d9d8675f322ad57308633279f0ae6f';
-
-    const API_BASE = 'https://api.api-futebol.com.br/v1';
-
-    async function fetchBrasileirao(){
-
-      const opts={ headers:{'Authorization':`Bearer ${API_TOKEN}`} };
-
-      const [tblResp, jogosResp] = await Promise.all([
-
-        fetch(`${API_BASE}/championships/10/tables`, opts),
-
-        fetch(`${API_BASE}/championships/10/games?status=OPEN`, opts)
-
-      ]);
-
-      const table = await tblResp.json();
-
-      const jogos = await jogosResp.json();
-
-      let htmlT='<h3>🏆 Classificação Série A</h3><table><tr><th>Pos</th><th>Time</th><th>Pts</th></tr>';
-
-      table.sort((a,b)=>a.position-b.position)
-
-        .forEach(t=> htmlT+=`<tr><td>${t.position}</td><td>${t.team.name}</td><td>${t.points}</td></tr>`);
-
-      htmlT+='</table>';
-
-      document.getElementById('brTabela').innerHTML=htmlT;
-
-      let htmlJ='<h3>📅 Jogos da rodada</h3>';
-
-      jogos.forEach(g=>{
-
-        let d=new Date(g.date).toLocaleString(), a=g.home_team.name, b=g.away_team.name;
-
-        let pa = Math.round(50 + (g.home_team.scores - g.away_team.scores)), pb=100-pa;
-
-        htmlJ+=`<div><strong>${a} x ${b}</strong> – ${d}<br>Chances: ${pa}% | ${pb}%</div><hr>`;
-
-      });
-
-      document.getElementById('brJogos').innerHTML=htmlJ;
-
-    }
-
-    window.onload = () => {
-
-      geraPrevisoes();
-
-      carregaNoticias();
-
-      carregaLista();
-
-      fetchBrasileirao().catch(console.error);
-
-    };
-
-  </script>
-
+  <h1>🎬 TV Portátil</h1>
+  <a class="btn" href="player.html">Abrir Lista de Canais</a>
 </body>
-
 </html>
