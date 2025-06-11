@@ -1,244 +1,118 @@
 
-<style>
-
-  #video-background {
-
-    position: fixed;
-
-    right: 0;
-
-    bottom: 0;
-
-    min-width: 100%;
-
-    min-height: 100%;
-
-    z-index: -1;
-
-    object-fit: cover;
-
-  }
-
-  .post-body {
-
-    position: relative;
-
-    z-index: 1;
-
-    background: rgba(0, 0, 0, 0.4); /* fundo semitransparente pra contraste */
-
-    color: white;
-
-    padding: 20px;
-
-  }
-
-</style>
-
-<video autoplay muted loop id="video-background" playsinline>
-
-  <source src="https://piratetv.pro/wp-content/themes/Pirate%20TV%204v/assets/images/top-bg.mp4" type="video/mp4">
-
-  Seu navegador não suporta vídeo.
-
-</video>
-
-</style>
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Blogflixtv - Início</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canais CXTv Espelhados</title>
   <style>
-    body { background-color: #f4f4f4; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    header { background-color: orange; color: white; padding: 1em; text-align: center; }
-    nav { background-color: #333; padding: 1em; text-align: center; }
-    nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; }
-    main { padding: 2em; text-align: center; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>🎬 Blogflixtv</h1>
-  </header>
-  <nav>
-    <a href="index.html">Início</a>
-    <a href="playcine.html">🔗 PlayCine</a>
-    <a href="player-lista.html">📺 Lista M3U8</a>
-  </nav>
-  <main>
-    <h2>Bem-vindo ao Blogflixtv</h2>
-    <p>Confira nossos conteúdos sobre filmes, séries e TV.</p>
-  </main>
-</body>
-</html>
-
-
-
-
-<style>
-
-  #video-background {
-
-    position: fixed;
-
-    right: 0;
-
-    bottom: 0;
-
-    min-width: 100%;
-
-    min-height: 100%;
-
-    z-index: -1;
-
-    object-fit: cover;
-
-  }
-
-  .post-body {
-
-    position: relative;
-
-    z-index: 1;
-
-    background: rgba(0, 0, 0, 0.4); /* fundo semitransparente pra contraste */
-
-    color: white;
-
-    padding: 20px;
-
-  }
-
-</style>
-
-<video autoplay muted loop id="video-background" playsinline>
-
-  <source src="https://piratetv.pro/wp-content/themes/Pirate%20TV%204v/assets/images/top-bg.mp4" type="video/mp4">
-
-  Seu navegador não suporta vídeo.
-
-</video>
-
-</style>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Blogflixtv - Início</title>
-  <style>
-    body { background-color: #f4f4f4; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    header { background-color: orange; color: white; padding: 1em; text-align: center; }
-    nav { background-color: #333; padding: 1em; text-align: center; }
-    nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; }
-    main { padding: 2em; text-align: center; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>🎬 Blogflixtv</h1>
-  </header>
-  <nav>
-    <a href="index.html">Início</a>
-    <a href="playcine.html">🔗 PlayCine</a>
-    <a href="player-lista.html">📺 Lista M3U8</a>
-  </nav>
-  <main>
-    <h2>Bem-vindo ao Blogflixtv</h2>
-    <p>Confira nossos conteúdos sobre filmes, séries e TV.</p>
-  </main>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rádios Retrô Anos 80</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
     body {
-      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
-      font-family: 'Orbitron', sans-serif;
+      background-color: #111;
       color: #fff;
-      padding: 40px;
+      font-family: Arial, sans-serif;
       margin: 0;
     }
-
-    .radio-player {
-      background: rgba(0, 0, 0, 0.8);
-      border: 2px solid #ff00ff;
-      border-radius: 15px;
-      box-shadow: 0 0 20px #ff00ff;
+    header {
+      background: #000;
       padding: 20px;
-      margin-bottom: 30px;
       text-align: center;
+      font-size: 28px;
+      color: yellow;
     }
-
-    .radio-player h2 {
-      color: #00ffff;
-      text-shadow: 0 0 10px #00ffff;
-      margin-bottom: 15px;
+    nav {
+      background: #222;
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-
-    audio {
-      width: 100%;
-      border-radius: 10px;
-      outline: none;
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 5px;
+      background-color: #444;
     }
-
-    .neon-border {
-      border: 3px solid #00ffff;
+    nav a:hover {
+      background-color: yellow;
+      color: #000;
+    }
+    section {
+      display: none;
+      padding: 20px;
+    }
+    section.active {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background-color: #1e1e1e;
       padding: 10px;
       border-radius: 10px;
-      box-shadow: 0 0 15px #00ffff;
+      box-shadow: 0 0 10px #000;
+    }
+    iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+      border-radius: 8px;
+    }
+    h3 {
+      margin: 10px 0 0;
+      font-size: 18px;
+    }
+    footer {
+      text-align: center;
+      background: #000;
+      color: #aaa;
+      padding: 15px;
+      margin-top: 20px;
     }
   </style>
+  <script>
+    function showCategory(category) {
+      const sections = document.querySelectorAll("section");
+      sections.forEach(sec => sec.classList.remove("active"));
+      document.getElementById(category).classList.add("active");
+    }
+    window.onload = () => showCategory('filmes');
+  </script>
 </head>
 <body>
-  <h1 style="text-align:center; text-shadow:0 0 20px #fff;">🎶 Estações Retrô Anos 80</h1>
+  <header>📺 Canais CXTv - Categorias</header>
+  <nav>
+    <a href="#" onclick="showCategory('filmes')">🎬 Filmes</a>
+    <a href="#" onclick="showCategory('tv')">📡 TV</a>
+    <a href="#" onclick="showCategory('esportes')">⚽ Esportes</a>
+    <a href="#" onclick="showCategory('infantil')">👧 Infantil</a>
+  </nav>
 
-  <div class="radio-player">
-    <h2>Rádio 80s Euroti</h2>
-    <div class="neon-border">
-      <audio controls autoplay>
-        <source src="https://centova.euroti.com.br:20001/1/stream.mp3" type="audio/mpeg">
-        Seu navegador não suporta o player.
-      </audio>
-    </div>
-  </div>
-<div class="radio-player">
-  <h2>107,5 FM Joinville (Rádio 107,5 FM)</h2>
-  <div class="neon-border">
-    <!-- Player Radioly -->
-    <iframe src="https://cast2.youngtech.radio.br/radio/8290/radio" width="300" height="80" frameborder="0" scrolling="no"></iframe>
-  </div>
-</div>
+  <section id="filmes">
+    <div class="card"><iframe src="https://player.cxtvlive.com/filmesonline1" allowfullscreen></iframe><h3>Filmes Online</h3></div>
+    <div class="card"><iframe src="https://player.cxtvlive.com/webtvcine" allowfullscreen></iframe><h3>Web TV Cine</h3></div>
+    <div class="card"><iframe src="https://player.cxtvlive.com/cinepix" allowfullscreen></iframe><h3>CinePIX TV</h3></div>
+  </section>
 
-  
-  <div class="radio-player">
-    <h2>Rádio89 fm Joinville</h2>
-    <div class="neon-border">
-      <audio controls>
-        <source src="https://stm01.virtualcast.com.br:8302/89joinville" type="audio/mpeg">
-        Seu navegador não suporta o player.
-      </audio>
-    </div>
-  </div>
+  <section id="tv">
+    <div class="card"><iframe src="https://player.cxtvlive.com/tvbrasil" allowfullscreen></iframe><h3>TV Brasil</h3></div>
+    <div class="card"><iframe src="https://player.cxtvlive.com/redetv" allowfullscreen></iframe><h3>RedeTV</h3></div>
+  </section>
 
-  <div class="radio-player">
-    <h2>Rádio Exemplo 3</h2>
-    <div class="neon-border">
-      <audio controls>
-        <source src="https://outra-radio.com.br/stream" type="audio/mpeg">
-        Seu navegador não suporta o player.
-      </audio>
-    </div>
-  </div>
+  <section id="esportes">
+    <div class="card"><iframe src="https://player.cxtvlive.com/sporttv" allowfullscreen></iframe><h3>SporTV</h3></div>
+    <div class="card"><iframe src="https://player.cxtvlive.com/espn" allowfullscreen></iframe><h3>ESPN Brasil</h3></div>
+  </section>
+
+  <section id="infantil">
+    <div class="card"><iframe src="https://player.cxtvlive.com/canalkids" allowfullscreen></iframe><h3>Canal Kids</h3></div>
+    <div class="card"><iframe src="https://player.cxtvlive.com/tvkids" allowfullscreen></iframe><h3>TV Kids</h3></div>
+  </section>
+
+  <footer>
+    Projeto de exemplo com múltiplas categorias espelhadas do CXTv.com.br – uso demonstrativo.
+  </footer>
 </body>
 </html>
