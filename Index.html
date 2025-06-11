@@ -1,217 +1,145 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Blogflixtv</title>
-<style>
-  * { box-sizing: border-box; margin:0; padding:0; }
-  html, body { height: 100%; font-family: sans-serif; background: #000; color: #fff; overflow-x: hidden; }
-  video#video-background {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    z-index: -1;
-  }
-  #splash {
-    position:fixed; inset:0;
-    display:flex; justify-content:center; align-items:center; flex-direction:column;
-    background:rgba(0,0,0,0.85); z-index:1000;
-  }
-  #splash img { width:200px; margin-bottom:1rem; }
-  #splash button {
-    padding:0.5rem 1rem;
-    background:#ffbb00;
-    border:none;
-    color:#111;
-    font-weight:bold;
-    border-radius:4px;
-    cursor:pointer;
-  }
-  #loginModal {
-    position:fixed; inset:0;
-    background:rgba(0,0,0,0.85);
-    display:flex; justify-content:center; align-items:center; flex-direction:column;
-    z-index:999;
-  }
-  #loginModal input, #loginModal button {
-    margin:0.5rem; padding:0.5rem;
-    border-radius:4px; border:none;
-  }
-  #loginModal button {
-    background:#ffbb00; font-weight:bold; color:#111;
-    cursor:pointer;
-  }
-  header {
-    padding:1rem; background:rgba(0,0,0,0.7);
-    text-align:center; font-size:1.5rem; color:#ffbb00;
-    position: sticky; top: 0; z-index: 10;
-  }
-  nav {
-    display:flex; justify-content:center; gap:1rem;
-    padding:0.5rem; background:rgba(0,0,0,0.6);
-    position: sticky; top: 60px; z-index: 9;
-  }
-  nav a {
-    color:#fff; text-decoration:none; font-weight:bold;
-    padding:0.3rem 0.8rem; border-radius:4px;
-  }
-  nav a.active, nav a:hover {
-    color:#111; background:#ffbb00;
-  }
-  .container {
-    padding:1rem;
-    display:flex; flex-wrap:wrap; gap:1rem;
-    justify-content:center;
-    backdrop-filter: blur(3px);
-  }
-  .card {
-    background:rgba(0,0,0,0.6);
-    border-radius:8px;
-    width:300px;
-    padding:1rem;
-    box-shadow:0 0 10px #000;
-  }
-  .card h3 { margin-bottom:0.5rem; font-size:1.1rem; }
-  iframe, video {
-    width:100%; height:170px;
-    border-radius:6px; margin-bottom:0.5rem;
-  }
-  footer {
-    text-align:center;
-    padding:1rem;
-    background:rgba(0,0,0,0.5);
-    color:#aaa;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>MegaBoxplus WebTV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body, html {
+      margin: 0; padding: 0;
+      font-family: Arial, sans-serif;
+      background: #0c1f3d;
+      color: #fff;
+      height: 100%;
+    }
+    #login, #app {
+      display: none;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #login.active, #app.active {
+      display: flex;
+    }
+    input, button {
+      margin: 5px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    #canalList {
+      height: 300px;
+      overflow-y: auto;
+      width: 90%;
+      max-width: 600px;
+      background: #142e54;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .canal {
+      margin: 5px 0;
+      padding: 5px;
+      background: #1a3b6e;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    video {
+      width: 90%;
+      max-width: 800px;
+      margin-top: 10px;
+      border: 2px solid #3da1ff;
+      border-radius: 10px;
+    }
+    #search {
+      margin: 10px 0;
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
 
-<!-- VÍDEO DE FUNDO -->
-<video autoplay muted loop id="video-background" playsinline>
-  <source src="https://piratetv.pro/wp-content/themes/Pirate%20TV%204v/assets/images/top-bg.mp4" type="video/mp4">
-  Seu navegador não suporta vídeo.
-</video>
-
-<!-- SPLASH -->
-<div id="splash">
-  <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://SEU_SITE.github.io" alt="QR Code"/>
-  <button onclick="closeSplash()">Entrar</button>
+<div id="login" class="active">
+  <h2>MegaBoxplus</h2>
+  <input type="text" id="user" placeholder="Usuário">
+  <input type="password" id="pass" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
 </div>
 
-<!-- LOGIN -->
-<div id="loginModal" style="display:none;">
-  <h2>Login</h2>
-  <input id="user" type="text" placeholder="Usuário"/>
-  <input id="pass" type="password" placeholder="Senha"/>
-  <button onclick="login()">Login</button>
+<div id="app">
+  <h3>Bem-vindo ao MegaBoxplus</h3>
+  <input type="text" id="search" placeholder="Buscar canal..." oninput="filtrarCanais()">
+  <div id="canalList"></div>
+  <video id="player" controls autoplay></video>
 </div>
 
-<!-- CABEÇALHO -->
-<header id="mainHeader" style="display:none;">Blogflixtv</header>
-
-<!-- MENU -->
-<nav id="mainNav" style="display:none;">
-  <a href="#" data-cat="filmes" class="active" onclick="switchCat('filmes')">🎬 Filmes</a>
-  <a href="#" data-cat="series" onclick="switchCat('series')">📺 Séries</a>
-  <a href="#" data-cat="tv" onclick="switchCat('tv')">📡 TV</a>
-</nav>
-
-<!-- CONTEÚDO -->
-<div class="container" id="canalContainer">
-  <!-- Card fixo do PlayCine -->
-  <div class="card">
-    <h3>🎬 Blogflixtv - PlayCine</h3>
-    <a href="http://www.playcinevs.info/s/2966" target="_blank" rel="noopener noreferrer" style="display:inline-block; text-align:center; background:#ffbb00; color:#111; padding:0.5rem 1rem; border-radius:4px; font-weight:bold; text-decoration:none;">
-      ▶️ Assistir no PlayCine
-    </a>
-  </div>
-</div>
-
-<!-- RODAPÉ -->
-<footer>Blogflixtv • Canais dinâmicos via lista Dropbox</footer>
-
-<!-- SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-  const listas = {
-    filmes: "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?dl=1",
-    series: "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?dl=1",
-    tv: "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?dl=1"
-  };
-  let canaisByCat = { filmes: [], series: [], tv: [] };
+  const listaURL = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=ajmh5d8u&dl=1";
 
-  function closeSplash(){
-    document.getElementById('splash').style.display = 'none';
-    document.getElementById('loginModal').style.display = 'flex';
-  }
-
-  function login(){
+  const login = () => {
     const u = document.getElementById('user').value;
     const p = document.getElementById('pass').value;
-    if(u && p){
-      document.getElementById('loginModal').style.display = 'none';
-      document.getElementById('mainHeader').style.display = 'block';
-      document.getElementById('mainNav').style.display = 'flex';
-      switchCat('filmes');
+    if (u === 'megabox' && p === 'plus123') {
+      document.getElementById('login').classList.remove('active');
+      document.getElementById('app').classList.add('active');
+      carregarLista();
     } else {
-      alert("Informe usuário e senha");
+      alert("Usuário ou senha inválidos!");
     }
   }
 
-  async function carregarCategoria(cat){
-    const resp = await fetch(listas[cat]);
-    const text = await resp.text();
-    const linhas = text.split("\n").map(l=>l.trim()).filter(Boolean);
-    const canais = [];
-    for(let i=0; i<linhas.length; i++){
-      if(linhas[i].startsWith("#EXTINF")){
-        const title = linhas[i].split(",")[1] || "Sem nome";
-        const url = linhas[i+1];
-        canais.push({ title, url });
+  let canais = [];
+
+  async function carregarLista() {
+    try {
+      const res = await fetch(listaURL);
+      const txt = await res.text();
+      const linhas = txt.split('\n');
+      for (let i = 0; i < linhas.length; i++) {
+        if (linhas[i].startsWith('#EXTINF')) {
+          const nome = linhas[i].split(',')[1]?.trim();
+          const url = linhas[i + 1]?.trim();
+          canais.push({ nome, url });
+        }
       }
+      mostrarCanais(canais);
+    } catch (e) {
+      alert("Erro ao carregar lista.");
     }
-    canaisByCat[cat] = canais;
-    renderCanais(canais);
   }
 
-  function renderCanais(canais){
-    const cont = document.getElementById('canalContainer');
-    cont.innerHTML = `
-      <div class="card">
-        <h3>🎬 Blogflixtv - PlayCine</h3>
-        <a href="http://www.playcinevs.info/s/2966" target="_blank" rel="noopener noreferrer" style="display:inline-block; text-align:center; background:#ffbb00; color:#111; padding:0.5rem 1rem; border-radius:4px; font-weight:bold; text-decoration:none;">
-          ▶️ Assistir no PlayCine
-        </a>
-      </div>
-    `;
-    canais.forEach(ch => {
-      const card = document.createElement('div');
-      card.className="card";
-      let player="";
-      if(ch.url.includes("youtube.com")||ch.url.includes("youtu.be")){
-        player = `<iframe src="${ch.url}" allowfullscreen></iframe>`;
-      } else if(ch.url.endsWith(".mp4")){
-        player = `<video controls src="${ch.url}"></video>`;
-      } else {
-        player = `<video controls autoplay src="${ch.url}" type="application/x-mpegURL"></video>`;
-      }
-      card.innerHTML = `<h3>${ch.title}</h3>${player}`;
-      cont.appendChild(card);
+  function mostrarCanais(lista) {
+    const cont = document.getElementById('canalList');
+    cont.innerHTML = '';
+    lista.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'canal';
+      div.innerText = c.nome;
+      div.onclick = () => tocar(c.url);
+      cont.appendChild(div);
     });
   }
 
-  function switchCat(cat){
-    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-    document.querySelector('nav a[data-cat="'+cat+'"]').classList.add('active');
-    if(!canaisByCat[cat] || canaisByCat[cat].length === 0){
-      carregarCategoria(cat);
+  function filtrarCanais() {
+    const termo = document.getElementById('search').value.toLowerCase();
+    const filtrados = canais.filter(c => c.nome.toLowerCase().includes(termo));
+    mostrarCanais(filtrados);
+  }
+
+  function tocar(url) {
+    const video = document.getElementById('player');
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(url);
+      hls.attachMedia(video);
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = url;
     } else {
-      renderCanais(canaisByCat[cat]);
+      alert("Seu navegador não suporta HLS.");
     }
   }
 </script>
-
 </body>
 </html>
