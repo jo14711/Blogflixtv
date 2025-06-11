@@ -1,65 +1,65 @@
-const listaURL = "https://www.dropbox.com/scl/fi/abc123/minha-lista.txt?rlkey=xyz123&dl=1"; // 👈 Coloque o seu link aqui
-let canais = [];
+const URL_DA_LISTA = "https://www.dropbox.com/s/abc123/lista.txt?dl=1"; // ← Altere para o link direto do seu .txt
 
 async function carregarLista() {
-  const res = await fetch(listaURL);
+  const res = await fetch(URL_DA_LISTA);
   const texto = await res.text();
-  canais = parseM3U(texto);
-  const categorias = [...new Set(canais.map(c => c.group))];
-  renderFiltros(categorias);
-  renderCanais("Todos");
-}
 
-function parseM3U(texto) {
   const linhas = texto.split('\n');
   const canais = [];
-  for (let i = 0; i < linhas.length; i++) {
-    if (linhas[i].startsWith('#EXTINF:')) {
-      const grupo = linhas[i].match(/group-title="([^"]+)"/)?.[1] || "Outros";
-      const logo = linhas[i].match(/tvg-logo="([^"]+)"/)?.[1] || "";
-      const nome = linhas[i].split(',').pop().trim();
-      const url = linhas[i + 1]?.trim();
-      if (url && url.startsWith('http')) {
-        canais.push({ nome, url, logo, group: grupo });
-      }
+  let atual = {};
+
+  for (let linha of linhas) {
+    linha = linha.trim();
+    if (linha.startsWith("#EXTINF")) {
+      const grupo = extrair(linha, 'group-title="', '"') || "Outros";
+      const logo = extrair(linha, 'tvg-logo="', '"') || "";
+      const nome = linha.split(',').pop().trim();
+      atual = { grupo, logo, nome };
+    } else if (linha && linha.startsWith("http")) {
+      atual.url = linha;
+      canais.push({ ...atual });
     }
   }
-  return canais;
-}
 
-function renderFiltros(categorias) {
-  const filtros = document.getElementById("filtros");
-  filtros.innerHTML = `<button onclick="renderCanais('Todos')">Todos</button>`;
-  categorias.forEach(cat => {
-    filtros.innerHTML += `<button onclick="renderCanais('${cat}')">${cat}</button>`;
+  const gruposUnicos = [...new Set(canais.map(c => c.grupo))];
+  const filtros = document.getElementById('filtros');
+  const lista = document.getElementById('lista');
+  const player = document.getElementById('player');
+
+  filtros.innerHTML = '';
+  gruposUnicos.forEach(grupo => {
+    const btn = document.createElement('button');
+    btn.textContent = grupo;
+    btn.onclick = () => mostrarGrupo(grupo);
+    filtros.appendChild(btn);
   });
-}
 
-function renderCanais(filtro) {
-  const lista = document.getElementById("lista");
-  lista.innerHTML = "";
-  const filtrados = filtro === "Todos" ? canais : canais.filter(c => c.group === filtro);
-  filtrados.forEach(c => {
-    const div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = `
-      <img src="${c.logo}" alt="${c.nome}">
-      <h3>${c.nome}</h3>
-    `;
-    div.onclick = () => tocar(c.url);
-    lista.appendChild(div);
-  });
-}
+  function mostrarGrupo(grupoSelecionado) {
+    lista.innerHTML = '';
+    canais.filter(c => c.grupo === grupoSelecionado).forEach(canal => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `
+        <img src="${canal.logo}" alt="${canal.nome}">
+        <h3>${canal.nome}</h3>
+      `;
+      div.onclick = () => {
+        player.src = canal.url;
+        player.style.display = 'block';
+        window.scrollTo({ top: player.offsetTop - 80, behavior: 'smooth' });
+      };
+      lista.appendChild(div);
+    });
+  }
 
-function tocar(url) {
-  const player = document.getElementById("player");
-  if (url.endsWith(".mp4") || url.endsWith(".m3u8") || url.endsWith(".ts")) {
-    player.src = `https://videojs-player.vercel.app/?src=${encodeURIComponent(url)}`;
-    player.style.display = "block";
-    player.scrollIntoView({ behavior: "smooth" });
-  } else {
-    alert("Link inválido ou não suportado.");
+  if (gruposUnicos.length > 0) {
+    mostrarGrupo(gruposUnicos[0]);
   }
 }
 
-carregarLista();
+function extrair(texto, inicio, fim) {
+  const ini = texto.indexOf(inicio);
+  if (ini === -1) return "";
+  const fimIdx = texto.indexOf(fim, ini + inicio.length);
+  return texto.substring(ini + inicio.length, fimIdx);
+}
