@@ -1,118 +1,109 @@
-
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Canais CXTv Espelhados</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎬 Blogflixtv - Filmes ao Vivo</title>
   <style>
     body {
+      margin: 0;
+      font-family: sans-serif;
       background-color: #111;
       color: #fff;
-      font-family: Arial, sans-serif;
-      margin: 0;
     }
     header {
-      background: #000;
-      padding: 20px;
+      background-color: #ffbb00;
+      padding: 1rem;
       text-align: center;
-      font-size: 28px;
-      color: yellow;
+      font-size: 1.5rem;
+      color: #111;
     }
-    nav {
-      background: #222;
+    .container {
       display: flex;
-      justify-content: center;
-      padding: 10px;
       flex-wrap: wrap;
-      gap: 10px;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 6px 12px;
-      border-radius: 5px;
-      background-color: #444;
-    }
-    nav a:hover {
-      background-color: yellow;
-      color: #000;
-    }
-    section {
-      display: none;
-      padding: 20px;
-    }
-    section.active {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
+      gap: 1rem;
+      padding: 1rem;
+      justify-content: center;
     }
     .card {
-      background-color: #1e1e1e;
-      padding: 10px;
+      background-color: #222;
       border-radius: 10px;
+      width: 300px;
+      padding: 1rem;
       box-shadow: 0 0 10px #000;
     }
-    iframe {
+    .card h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+    }
+    iframe, video {
       width: 100%;
       height: 200px;
-      border: none;
       border-radius: 8px;
+      margin-bottom: 0.5rem;
     }
-    h3 {
-      margin: 10px 0 0;
-      font-size: 18px;
-    }
-    footer {
-      text-align: center;
-      background: #000;
-      color: #aaa;
-      padding: 15px;
-      margin-top: 20px;
+    button {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #ffbb00;
+      border: none;
+      color: #111;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
-  <script>
-    function showCategory(category) {
-      const sections = document.querySelectorAll("section");
-      sections.forEach(sec => sec.classList.remove("active"));
-      document.getElementById(category).classList.add("active");
-    }
-    window.onload = () => showCategory('filmes');
-  </script>
 </head>
 <body>
-  <header>📺 Canais CXTv - Categorias</header>
-  <nav>
-    <a href="#" onclick="showCategory('filmes')">🎬 Filmes</a>
-    <a href="#" onclick="showCategory('tv')">📡 TV</a>
-    <a href="#" onclick="showCategory('esportes')">⚽ Esportes</a>
-    <a href="#" onclick="showCategory('infantil')">👧 Infantil</a>
-  </nav>
 
-  <section id="filmes">
-    <div class="card"><iframe src="https://player.cxtvlive.com/filmesonline1" allowfullscreen></iframe><h3>Filmes Online</h3></div>
-    <div class="card"><iframe src="https://player.cxtvlive.com/webtvcine" allowfullscreen></iframe><h3>Web TV Cine</h3></div>
-    <div class="card"><iframe src="https://player.cxtvlive.com/cinepix" allowfullscreen></iframe><h3>CinePIX TV</h3></div>
-  </section>
+<header>🎬 Blogflixtv - Filmes Online</header>
+<div class="container" id="canalContainer">Carregando canais...</div>
 
-  <section id="tv">
-    <div class="card"><iframe src="https://srv3.zcast.com.br/vivaxtv/vivaxtv/playlist.m3u8" allowfullscreen></iframe><h3>TV Brasil</h3></div>
-    <div class="card"><iframe src="https://player.cxtvlive.com/redetv" allowfullscreen></iframe><h3>RedeTV</h3></div>
-  </section>
+<script>
+  const dropboxURL = "https://www.dropbox.com/scl/fi/2qrnsck786xi5i7wvhmie/minha-lista.txt?rlkey=795xgcvmzfwtfss81rpi6w3k9&st=uootu97b&dl=1";
 
-  <section id="esportes">
-    <div class="card"><iframe src="https://player.cxtvlive.com/sporttv" allowfullscreen></iframe><h3>SporTV</h3></div>
-    <div class="card"><iframe src="https://player.cxtvlive.com/espn" allowfullscreen></iframe><h3>ESPN Brasil</h3></div>
-  </section>
+  async function carregarLista() {
+    const resposta = await fetch(dropboxURL);
+    const texto = await resposta.text();
+    const linhas = texto.split("\n").map(l => l.trim()).filter(l => l !== "");
 
-  <section id="infantil">
-    <div class="card"><iframe src="https://player.cxtvlive.com/canalkids" allowfullscreen></iframe><h3>Canal Kids</h3></div>
-    <div class="card"><iframe src="https://player.cxtvlive.com/tvkids" allowfullscreen></iframe><h3>TV Kids</h3></div>
-  </section>
+    const canais = [];
+    for (let i = 0; i < linhas.length; i++) {
+      if (linhas[i].startsWith("#EXTINF")) {
+        const titulo = linhas[i].split(",")[1] || "Sem nome";
+        const url = linhas[i + 1] || "";
+        if (url) canais.push({ titulo, url });
+      }
+    }
 
-  <footer>
-    Projeto de exemplo com múltiplas categorias espelhadas do CXTv.com.br – uso demonstrativo.
-  </footer>
+    const container = document.getElementById("canalContainer");
+    container.innerHTML = "";
+
+    canais.forEach(canal => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      let playerHTML = "";
+
+      if (canal.url.includes("youtube.com") || canal.url.includes("youtu.be")) {
+        playerHTML = `<iframe src="${canal.url}" allowfullscreen></iframe>`;
+      } else if (canal.url.endsWith(".mp4")) {
+        playerHTML = `<video controls src="${canal.url}"></video>`;
+      } else {
+        playerHTML = `<video controls autoplay src="${canal.url}" type="application/x-mpegURL"></video>`;
+      }
+
+      card.innerHTML = `
+        <h3>${canal.titulo}</h3>
+        ${playerHTML}
+        <button onclick="window.open('${canal.url}', '_blank')">Abrir</button>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  carregarLista();
+</script>
+
 </body>
 </html>
